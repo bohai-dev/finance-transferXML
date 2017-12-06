@@ -35,8 +35,6 @@ public class VoucherService {
 
     static BigDecimal ZERO = new BigDecimal("0");
     
-    static Map<String, Account> map= new HashMap<String, Account>();
-    
     /**
      * 解析xml文件
      * @param url 文件路径
@@ -97,7 +95,9 @@ public class VoucherService {
     }
     
     
-    public void generateXML(File infile, String targetPath) throws DocumentException, IOException{
+    public Map<String,Account> generateXML(File infile, String targetPath) throws DocumentException, IOException{
+        
+        Map<String, Account> map= new HashMap<String, Account>();
         
         int dateIndex = 0;
         
@@ -155,11 +155,11 @@ public class VoucherService {
                 Element bankCell = cells.get(bankIndex).element("Data");
                 String bankName = bankCell.getTextTrim();
                 Element inCell = cells.get(inIndex).element("Data");
-                String in = inCell.getTextTrim();
+                String in = inCell.getTextTrim().replaceAll(",", "");
                 Element outCell = cells.get(outIndex).element("Data");
-                String out = outCell.getTextTrim();
+                String out = outCell.getTextTrim().replaceAll(",", "");
                 
-                Account account = map.get("bankName");
+                Account account = map.get(bankName);
                 if(account == null){
                     account = new Account();
                     account.setBankName(bankName);
@@ -169,17 +169,16 @@ public class VoucherService {
                 }else {
                     account.setIn(account.getIn().add(new BigDecimal(in)));
                     account.setOut(account.getOut().add(new BigDecimal(out)));
+                    map.put(bankName, account);
                 }
                 
-                Document outDoc = this.createDocument(map);
-                
-                this.write(outDoc,targetPath);
         }
+        Document outDoc = this.createDocument(map);
+        this.write(outDoc,targetPath);
+        
+        return map;
     }
     
-    public static void main(String[] args) throws DocumentException, FileNotFoundException {
-        
-    }
     
     
     public Document createDocument(Map<String, Account> map) {
@@ -227,7 +226,7 @@ public class VoucherService {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("");//科目 TODO
+                item.addElement("accsubjcode").setText("11240101");//科目 TODO
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -239,7 +238,7 @@ public class VoucherService {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("");//TODO
+                item.addElement("pk_accasoa").setText("11240101");//TODO
             }
             
             if(account.getOut() != null && account.getOut().compareTo(ZERO) > 0){
@@ -249,7 +248,7 @@ public class VoucherService {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("");//科目 TODO
+                item.addElement("accsubjcode").setText("11240401");//科目 TODO
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -261,7 +260,7 @@ public class VoucherService {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("");//TODO
+                item.addElement("pk_accasoa").setText("11240401");//TODO
             }
         }
         return document;

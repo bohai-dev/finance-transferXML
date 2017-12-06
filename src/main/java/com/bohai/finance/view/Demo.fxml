@@ -6,28 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="337.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bohai.finance.controller.SampleController">
-   <left>
-      <SplitPane dividerPositions="0.7064516129032258" orientation="VERTICAL">
-         <items>
-            <Pane prefHeight="193.0" prefWidth="598.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button id="fileButton" fx:id="fileButton" layoutX="262.0" layoutY="41.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
-                  <TextField id="textField" fx:id="textField" editable="false" layoutX="57.0" layoutY="41.0" prefHeight="23.0" prefWidth="204.0" />
-                  <Button id="transferButton" fx:id="transferButton" layoutX="151.0" layoutY="97.0" mnemonicParsing="false" onAction="#generateVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
-               </children>
-            </Pane>
-            <TabPane prefHeight="98.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab text="消息">
-                     <content>
-                        <TextArea prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-         </items>
-      </SplitPane>
-   </left>
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
@@ -44,4 +22,26 @@
          </menus>
       </MenuBar>
    </top>
+   <center>
+      <SplitPane dividerPositions="0.7064516129032258" orientation="VERTICAL" BorderPane.alignment="CENTER">
+         <items>
+            <Pane prefHeight="193.0" prefWidth="598.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="fileButton" fx:id="fileButton" layoutX="262.0" layoutY="41.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
+                  <TextField id="textField" fx:id="textField" editable="false" layoutX="57.0" layoutY="41.0" prefHeight="23.0" prefWidth="204.0" />
+                  <Button id="transferButton" fx:id="transferButton" layoutX="151.0" layoutY="97.0" mnemonicParsing="false" onAction="#generateVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
+               </children>
+            </Pane>
+            <TabPane prefHeight="98.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab text="消息">
+                     <content>
+                        <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </items>
+      </SplitPane>
+   </center>
 </BorderPane>

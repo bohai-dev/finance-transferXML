@@ -1,10 +1,14 @@
 package com.bohai.finance.controller;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Map.Entry;
 
+import com.bohai.finance.model.Account;
 import com.bohai.finance.service.VoucherService;
 import com.bohai.finance.util.ApplicationConfig;
 import com.bohai.finance.util.DateFormatterUtil;
@@ -14,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -28,6 +33,9 @@ public class SampleController implements Initializable{
     
     @FXML
     private Button transferButton;
+    
+    @FXML
+    private TextArea textArea;
     
     private File file;
     
@@ -46,8 +54,10 @@ public class SampleController implements Initializable{
         FileChooser chooser = new FileChooser();
         chooser.setTitle("选择文件");
         //读取上次目录
-        if(ApplicationConfig.getProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY) != null){
-            chooser.setInitialDirectory(new File(ApplicationConfig.getProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY)));
+        String lastUploadDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY);
+        
+        if(lastUploadDirectory != null){
+            chooser.setInitialDirectory(new File(lastUploadDirectory));
         }
         file = chooser.showOpenDialog(new Stage());
         if(file != null) {
@@ -89,7 +99,20 @@ public class SampleController implements Initializable{
                 ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
                 VoucherService voucherService = new VoucherService();
                 try {
-                    voucherService.generateXML(file, file1.getAbsolutePath());
+                    Map<String, Account> map = voucherService.generateXML(file, file1.getAbsolutePath());
+                    
+                    BigDecimal totalIn = new BigDecimal("0");
+                    BigDecimal totalOut = new BigDecimal("0");
+                    if(map != null){
+                        for (Entry<String, Account> m :map.entrySet())  {
+                            Account account = m.getValue();
+                            textArea.appendText(account.getBankName()+" 入金："+account.getIn()+" ,出金："+account.getOut()+"\n");
+                            totalIn = totalIn.add(account.getIn());
+                            totalOut = totalOut.add(account.getOut());
+                        }
+                        textArea.appendText("总计入金："+totalIn+" ,出金："+totalOut+"\n");
+                    }
+                    
                     Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");
                     warning.showAndWait();
                 } catch (Exception e) {

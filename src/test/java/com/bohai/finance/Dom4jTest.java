@@ -22,6 +22,7 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
+import com.bohai.finance.main.Demo;
 import com.bohai.finance.model.Account;
 import com.bohai.finance.util.DateFormatterUtil;
 
@@ -161,8 +162,85 @@ public class Dom4jTest {
         }
     }
     
-    public static void main(String[] args) throws DocumentException, FileNotFoundException {
+    public static void main(String[] args) throws DocumentException, IOException {
+        int dateIndex = 0;
         
+        int bankIndex = 0;
+        
+        int inIndex = 0;
+        
+        int outIndex = 0;
+        
+        Dom4jTest test = new Dom4jTest();
+        
+        Document document = test.parse("F:\\财务转XML\\出入金查询_2017-11-14.xml");
+        
+        Element root = document.getRootElement();
+        
+        Element workSheet = root.element("Worksheet");
+        
+        Element table = workSheet.element("Table");
+        
+        List<Element> rows = table.elements("Row");
+        
+        //获取标题索引
+        Element head = rows.get(2);
+        List<Element> headCells = head.elements("Cell");
+        for(int j = 0 ; j < headCells.size() ; j++){
+            
+            Element cell = headCells.get(j);
+            Element data = cell.element("Data");
+            
+            String value = data.getTextTrim();
+            
+            if("交易日".equals(value)){
+                dateIndex = j;
+                
+            }else if ("银行".equals(value)) {
+                bankIndex = j;
+            }else if ("入金".equals(value)) {
+                inIndex = j;
+            }else if ("出金".equals(value)) {
+                outIndex = j;
+            }
+            
+        }
+        
+        for(int i =3 ; i < rows.size() ; i++){
+            
+            Element row = rows.get(i);
+            
+            List<Element> cells = row.elements("Cell");
+            
+                Element firstCell = cells.get(0).element("Data");
+                String firstStr = firstCell.getText();
+                if(firstStr.indexOf("总计") > -1){
+                    break;
+                }
+            
+                Element bankCell = cells.get(bankIndex).element("Data");
+                String bankName = bankCell.getTextTrim();
+                Element inCell = cells.get(inIndex).element("Data");
+                String in = inCell.getTextTrim();
+                Element outCell = cells.get(outIndex).element("Data");
+                String out = outCell.getTextTrim();
+                
+                Account account = map.get("bankName");
+                if(account == null){
+                    account = new Account();
+                    account.setBankName(bankName);
+                    account.setIn(new BigDecimal(in));
+                    account.setOut(new BigDecimal(out));
+                    map.put(bankName, account);
+                }else {
+                    account.setIn(account.getIn().add(new BigDecimal(in)));
+                    account.setOut(account.getOut().add(new BigDecimal(out)));
+                }
+        }
+        
+        Document outDoc = test.createDocument(map);
+        
+        test.write(outDoc,"C:\\output.xml");
     }
     
     
@@ -211,7 +289,7 @@ public class Dom4jTest {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("");//科目 TODO
+                item.addElement("accsubjcode").setText("11240101");//科目 TODO
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -223,7 +301,7 @@ public class Dom4jTest {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("");//TODO
+                item.addElement("pk_accasoa").setText("11240101");//TODO
             }
             
             if(account.getOut() != null && account.getOut().compareTo(ZERO) > 0){
@@ -233,7 +311,7 @@ public class Dom4jTest {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("");//科目 TODO
+                item.addElement("accsubjcode").setText("11240401");//科目 TODO
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -245,7 +323,7 @@ public class Dom4jTest {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("");//TODO
+                item.addElement("pk_accasoa").setText("11240401");//TODO
             }
         }
         return document;
