@@ -226,7 +226,7 @@ public class VoucherService {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("11240101");//科目 TODO
+                item.addElement("accsubjcode").setText("");//科目 TODO
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -238,7 +238,7 @@ public class VoucherService {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("11240101");//TODO
+                item.addElement("pk_accasoa").setText("");//TODO
             }
             
             if(account.getOut() != null && account.getOut().compareTo(ZERO) > 0){
@@ -248,7 +248,7 @@ public class VoucherService {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("11240401");//科目 TODO
+                item.addElement("accsubjcode").setText("");//科目 TODO
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -260,7 +260,7 @@ public class VoucherService {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("11240401");//TODO
+                item.addElement("pk_accasoa").setText("");//TODO
             }
         }
         return document;
