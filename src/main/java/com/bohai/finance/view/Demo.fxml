@@ -5,13 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="337.0" prefWidth="404.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bohai.finance.controller.SampleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="589.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bohai.finance.controller.SampleController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
             <Menu mnemonicParsing="false" text="设置">
                <items>
-                  <MenuItem fx:id="bankItem" mnemonicParsing="false" onAction="#createTable" text="Close" />
+                  <MenuItem fx:id="bankItem" mnemonicParsing="false" onAction="#createBankTab" text="银行账户" />
+                  <MenuItem fx:id="deptItem" mnemonicParsing="false" onAction="#createDeptTab" text="营业部" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
@@ -23,13 +24,13 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.5" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.6820388349514563" orientation="VERTICAL" BorderPane.alignment="CENTER">
          <items>
-            <TabPane id="tabPane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="ALL_TABS">
+            <TabPane id="tabPane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0">
               <tabs>
                 <Tab closable="false" text="生成凭证文件">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="587.0">
                            <children>
                               <Button id="fileButton" fx:id="fileButton" layoutX="262.0" layoutY="22.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
                               <TextField id="textField" fx:id="textField" editable="false" layoutX="57.0" layoutY="22.0" prefHeight="23.0" prefWidth="204.0" />
@@ -38,18 +39,13 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="银行信息">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
               </tabs>
             </TabPane>
             <TabPane prefHeight="98.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab text="消息">
                      <content>
-                        <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" />
+                        <TextArea fx:id="textArea" prefHeight="196.0" prefWidth="587.0" />
                      </content>
                 </Tab>
               </tabs>

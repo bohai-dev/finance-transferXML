@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 import com.bohai.finance.model.Account;
+import com.bohai.finance.model.Bank;
 import com.bohai.finance.service.VoucherService;
 import com.bohai.finance.util.ApplicationConfig;
 import com.bohai.finance.util.DateFormatterUtil;
@@ -18,7 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -45,6 +46,9 @@ public class SampleController implements Initializable{
     
     @FXML
     private MenuItem bankItem;
+    
+    @FXML
+    private MenuItem deptItem;
     
     @FXML
     private TabPane tabPane;
@@ -111,16 +115,16 @@ public class SampleController implements Initializable{
                 ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
                 VoucherService voucherService = new VoucherService();
                 try {
-                    Map<String, Account> map = voucherService.generateXML(file, file1.getAbsolutePath());
+                    Map<String, Bank> map = voucherService.generateXML(file, file1.getAbsolutePath());
                     
                     BigDecimal totalIn = new BigDecimal("0");
                     BigDecimal totalOut = new BigDecimal("0");
                     if(map != null){
-                        for (Entry<String, Account> m :map.entrySet())  {
-                            Account account = m.getValue();
-                            textArea.appendText(account.getBankName()+" 入金："+account.getIn()+" ,出金："+account.getOut()+"\n");
-                            totalIn = totalIn.add(account.getIn());
-                            totalOut = totalOut.add(account.getOut());
+                        for (Entry<String, Bank> m :map.entrySet())  {
+                            Bank bank = m.getValue();
+                            textArea.appendText(bank.getBankName()+" 入金："+bank.getIn()+" ,出金："+bank.getOut()+"\n");
+                            totalIn = totalIn.add(bank.getIn());
+                            totalOut = totalOut.add(bank.getOut());
                         }
                         textArea.appendText("总计入金："+totalIn+" ,出金："+totalOut+"\n");
                     }
@@ -137,13 +141,35 @@ public class SampleController implements Initializable{
     }
     
     @FXML
-    public void createTable() throws IOException{
+    public void createBankTab() throws IOException{
+        
+        List<Tab> tabs = tabPane.getTabs();
+        for (Tab tab : tabs) {
+            if(tab.getText().equals("银行账户")){
+                tabPane.getSelectionModel().select(tab);
+                return;
+            }
+        }
         
         Tab child = (Tab) FXMLLoader.load(getClass().getResource("/com/bohai/finance/view/BankTab.fxml"));
         tabPane.getTabs().add(child);
-        
+        tabPane.getSelectionModel().select(child);
     }
     
-    
+    @FXML
+    public void createDeptTab() throws IOException{
+        
+        List<Tab> tabs = tabPane.getTabs();
+        for (Tab tab : tabs) {
+            if(tab.getText().equals("营业部")){
+                tabPane.getSelectionModel().select(tab);
+                return;
+            }
+        }
+        
+        Tab child = (Tab) FXMLLoader.load(getClass().getResource("/com/bohai/finance/view/BusinessDeptTab.fxml"));
+        tabPane.getTabs().add(child);
+        tabPane.getSelectionModel().select(child);
+    }
     
 }

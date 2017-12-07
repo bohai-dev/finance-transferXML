@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<Tab text="营业部" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bohai.finance.controller.BusinessDepartmentController">
+   <content>
+      <TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="deptNameCol" minWidth="30.0" prefWidth="75.0" text="营业部名称" />
+          <TableColumn fx:id="subjectCodeCol" minWidth="30.0" prefWidth="75.0" text="科目编号" />
+            <TableColumn fx:id="accountNameCol" minWidth="30.0" prefWidth="75.0" text="科目名称" />
+            <TableColumn fx:id="assCodeCol" minWidth="30.0" prefWidth="75.0" text="辅助核算项编码" />
+            <TableColumn fx:id="assValueCol" minWidth="30.0" prefWidth="75.0" text="辅助核算项值" />
+        </columns>
+      </TableView>
+   </content>
+</Tab>

@@ -24,7 +24,10 @@ import org.dom4j.io.XMLWriter;
 
 import com.bohai.finance.Dom4jTest;
 import com.bohai.finance.model.Account;
+import com.bohai.finance.model.Bank;
+import com.bohai.finance.model.BusinessDepartment;
 import com.bohai.finance.util.DateFormatterUtil;
+import com.sun.xml.internal.ws.api.pipe.ThrowableContainerPropertySet;
 
 /**
  * 生成凭证类
@@ -33,7 +36,7 @@ import com.bohai.finance.util.DateFormatterUtil;
  */
 public class VoucherService {
 
-    static BigDecimal ZERO = new BigDecimal("0");
+    static final BigDecimal ZERO = new BigDecimal("0");
     
     /**
      * 解析xml文件
@@ -95,9 +98,29 @@ public class VoucherService {
     }
     
     
-    public Map<String,Account> generateXML(File infile, String targetPath) throws DocumentException, IOException{
+    public Map<String,Bank> generateXML(File infile, String targetPath) throws Exception{
         
-        Map<String, Account> map= new HashMap<String, Account>();
+        Map<String, Bank> bankMap= new HashMap<String, Bank>();
+        BankService bankService = new BankService();
+        List<Bank> banks = bankService.queryBanks();
+        if(banks != null){
+            for (Bank bank : banks) {
+                
+                bank.setIn(ZERO);
+                bank.setOut(ZERO);
+                bankMap.put(bank.getBankName(), bank);
+            }
+        }
+        
+        Map<String, BusinessDepartment> DeptMap= new HashMap<String, BusinessDepartment>();
+        DeptService deptService = new DeptService();
+        List<BusinessDepartment> depts = deptService.queryDepts();
+        if(depts !=null){
+            for (BusinessDepartment businessDepartment : depts) {
+                
+            }
+        }
+        
         
         int dateIndex = 0;
         
@@ -159,29 +182,24 @@ public class VoucherService {
                 Element outCell = cells.get(outIndex).element("Data");
                 String out = outCell.getTextTrim().replaceAll(",", "");
                 
-                Account account = map.get(bankName);
-                if(account == null){
-                    account = new Account();
-                    account.setBankName(bankName);
-                    account.setIn(new BigDecimal(in));
-                    account.setOut(new BigDecimal(out));
-                    map.put(bankName, account);
+                Bank bank = bankMap.get(bankName);
+                if(bank == null){
+                    throw new Exception("银行信息未维护");
                 }else {
-                    account.setIn(account.getIn().add(new BigDecimal(in)));
-                    account.setOut(account.getOut().add(new BigDecimal(out)));
-                    map.put(bankName, account);
+                    bank.setIn(bank.getIn().add(new BigDecimal(in)));
+                    bank.setOut(bank.getOut().add(new BigDecimal(out)));
                 }
                 
         }
-        Document outDoc = this.createDocument(map);
+        Document outDoc = this.createDocument(bankMap);
         this.write(outDoc,targetPath);
         
-        return map;
+        return bankMap;
     }
     
     
     
-    public Document createDocument(Map<String, Account> map) {
+    public Document createDocument(Map<String, Bank> map) {
         Document document = DocumentHelper.createDocument();
         Element ufinterface = document.addElement("ufinterface")
                 .addAttribute("account", "002")
@@ -216,17 +234,17 @@ public class VoucherService {
         Element details = voucher_head.addElement("details");
         
         int i = 1;
-        for (Entry<String, Account> m :map.entrySet())  {
+        for (Entry<String, Bank> m :map.entrySet())  {
             
-            Account account = m.getValue();
-            if(account.getIn() != null && account.getIn().compareTo(ZERO) > 0){
+            Bank bank = m.getValue();
+            if(bank.getIn() != null && bank.getIn().compareTo(ZERO) > 0){
                 Element item = details.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText(account.getBankName()+"入金");
+                item.addElement("explanation").setText(bank.getBankName()+"入金");
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-                item.addElement("debitamount").setText("0");
-                item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("");//科目 TODO
+                item.addElement("debitamount").setText(bank.getIn().toString());
+                item.addElement("localdebitamount").setText(bank.getIn().toString());
+                item.addElement("accsubjcode").setText(bank.getSubjectCode());//科目 
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -238,13 +256,16 @@ public class VoucherService {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("");//TODO
+                item.addElement("pk_accasoa").setText("bank.getSubjectCode()");//TODO
+                Element ass = item.addElement("ass").addElement("item");
+                ass.addElement("pk_Checktype").setText("0011"); //银行账户
+                ass.addElement("pk_Checkvalue").setText(bank.getAccountNo());
             }
             
-            if(account.getOut() != null && account.getOut().compareTo(ZERO) > 0){
+            if(bank.getOut() != null && bank.getOut().compareTo(ZERO) > 0){
                 Element item = details.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText(account.getBankName()+"出金");
+                item.addElement("explanation").setText(bank.getBankName()+"出金");
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");

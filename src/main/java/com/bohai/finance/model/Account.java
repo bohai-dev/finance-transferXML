@@ -14,15 +14,6 @@ public class Account {
      */
     private String accountNo;
     
-    /**
-     * 入金
-     */
-    private BigDecimal in;
-    
-    /**
-     * 出金
-     */
-    private BigDecimal out;
 
     public String getBankName() {
         return bankName;
@@ -40,21 +31,4 @@ public class Account {
         this.accountNo = accountNo;
     }
 
-    public BigDecimal getIn() {
-        return in;
-    }
-
-    public void setIn(BigDecimal in) {
-        this.in = in;
-    }
-
-    public BigDecimal getOut() {
-        return out;
-    }
-
-    public void setOut(BigDecimal out) {
-        this.out = out;
-    }
-    
-    
 }

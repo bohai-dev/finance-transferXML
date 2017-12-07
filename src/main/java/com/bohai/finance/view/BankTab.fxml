@@ -5,17 +5,15 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<Tab text="银行账户" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <graphic>
-      <BorderPane prefHeight="200.0" prefWidth="200.0">
-         <center>
-            <TableView prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-         </center>
-      </BorderPane>
-   </graphic>
+<Tab text="银行账户" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bohai.finance.controller.BankController">
+   <content>
+      <TableView fx:id="tableView" editable="true" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="bankCol" minWidth="30.0" prefWidth="75.0" text="银行名称" />
+          <TableColumn fx:id="subjectCol" minWidth="30.0" prefWidth="75.0" text="科目编码" />
+            <TableColumn fx:id="subjectNameCol" minWidth="30.0" prefWidth="75.0" text="科目名称" />
+            <TableColumn fx:id="accountCol" minWidth="30.0" prefWidth="75.0" text="账户号" />
+        </columns>
+      </TableView>
+   </content>
 </Tab>
