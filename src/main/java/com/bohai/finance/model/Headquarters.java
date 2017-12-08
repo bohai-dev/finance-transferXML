@@ -2,13 +2,16 @@ package com.bohai.finance.model;
 
 import java.math.BigDecimal;
 
-public class BusinessDepartment {
+/**
+ * 总部汇总
+ * @author BHQH-CXYWB
+ *
+ */
+public class Headquarters {
     
-    private String deptName;
+    private String description;
     
     private String subjectCode;
-    
-    private String subjectName;
     
     private String assCode;
     
@@ -18,12 +21,12 @@ public class BusinessDepartment {
     
     private BigDecimal out;
 
-    public String getDeptName() {
-        return deptName;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getSubjectCode() {
@@ -32,14 +35,6 @@ public class BusinessDepartment {
 
     public void setSubjectCode(String subjectCode) {
         this.subjectCode = subjectCode;
-    }
-
-    public String getSubjectName() {
-        return subjectName;
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
     }
 
     public String getAssCode() {
@@ -73,6 +68,7 @@ public class BusinessDepartment {
     public void setOut(BigDecimal out) {
         this.out = out;
     }
-
+    
+    
 
 }

@@ -133,6 +133,7 @@ public class SampleController implements Initializable{
                     warning.showAndWait();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    textArea.appendText("生成凭证文件失败："+e.getMessage()+"\n");
                     Alert warning = new Alert(Alert.AlertType.ERROR,"生成失败！");
                     warning.showAndWait();
                 }

@@ -9,9 +9,11 @@ import com.bohai.finance.service.BankService;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -62,6 +64,31 @@ public class BankController implements Initializable{
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
+        accountCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Bank,String>>() {
+            
+            @Override
+            public void handle(CellEditEvent<Bank, String> event) {
+                
+                //原值
+                System.out.println("原值"+event.getOldValue());
+                //新值
+                System.out.println("新值"+event.getNewValue());
+                
+                event.getRowValue().setAccountNo(event.getNewValue());
+                
+                BankService bankService = new BankService();
+                try {
+                    bankService.updateAccountNoByBankName(event.getRowValue().getBankName(), event.getNewValue());
+                } catch (Exception e) {
+                    
+                    e.printStackTrace();
+                    //TODO
+                }
+                
+            }
+        });
     }
+    
 
 }
