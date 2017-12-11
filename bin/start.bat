@@ -1,4 +1,5 @@
 
+setlocal
 cd ..
 set "CURRENT_DIR=%cd%"
 echo %CURRENT_DIR%
