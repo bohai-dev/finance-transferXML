@@ -14,8 +14,8 @@ public class Upload {
 
     public static void main(String[] args) throws Exception {
         
-        //URL url = new URL("http://12.65.178.131:3390/service/XChangeServlet?account=01&groupcode=00");
-        URL url = new URL("http://101.95.0.114:8090/bohai-dataCenter");
+        URL url = new URL("http://12.65.178.131:3390/service/XChangeServlet?account=01&groupcode=00");
+        //URL url = new URL("http://101.95.0.114:8090/bohai-dataCenter");
         
         URLConnection connection = url.openConnection();
         

@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class ApplicationConfig {
 	
-	private static final String APPLICATION_PROPERTY_FILE_NAME = "application.properties";
+	private static final String APPLICATION_PROPERTY_FILE_NAME = "conf\\application.properties";
 	
 	private static File sFile = new File(APPLICATION_PROPERTY_FILE_NAME);
 	

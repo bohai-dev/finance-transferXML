@@ -33,6 +33,20 @@ public class Bank {
      * 账户号
      */
     private String accountNo;
+    
+    /**
+     * 日期
+     */
+    private String date;
+    
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getBankName() {
         return bankName;
