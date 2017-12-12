@@ -179,7 +179,10 @@ public class VoucherService {
                 if(firstStr.indexOf("总计") > -1){
                     break;
                 }
-            
+                
+                Element dateCell = cells.get(dateIndex).element("Data");
+                String dateStr = dateCell.getTextTrim();
+                
                 Element bankCell = cells.get(bankIndex).element("Data");
                 String bankName = bankCell.getTextTrim();
                 Element inCell = cells.get(inIndex).element("Data");
@@ -193,6 +196,7 @@ public class VoucherService {
                 }else {
                     bank.setIn(bank.getIn().add(new BigDecimal(in)));
                     bank.setOut(bank.getOut().add(new BigDecimal(out)));
+                    bank.setDate(dateStr);
                 }
                 
         }
@@ -210,6 +214,8 @@ public class VoucherService {
                     break;
                 }
             
+                Element dateCell = cells.get(dateIndex).element("Data");
+                String dateStr = dateCell.getTextTrim();
                 Element deptCell = cells.get(depIndex).element("Data");
                 String deptName = deptCell.getTextTrim();
                 Element inCell = cells.get(inIndex).element("Data");
@@ -221,6 +227,7 @@ public class VoucherService {
                 if(businessDepartment == null){
                     throw new Exception("营业部信息未维护");
                 }else {
+                    businessDepartment.setDate(dateStr);
                     businessDepartment.setIn(businessDepartment.getIn().add(new BigDecimal(in)));
                     businessDepartment.setOut(businessDepartment.getOut().add(new BigDecimal(out)));
                 }
@@ -279,7 +286,7 @@ public class VoucherService {
             if(bank.getIn() != null && bank.getIn().compareTo(ZERO) > 0){
                 Element item = detailsIn.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText("银期转账（入）"+bank.getBankName());
+                item.addElement("explanation").setText("银期转账（入）"+bank.getDate()+bank.getBankName());
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(bank.getIn().toString());
                 item.addElement("localdebitamount").setText(bank.getIn().toString());
@@ -310,10 +317,12 @@ public class VoucherService {
         head.setOut(ZERO);
         head.setAssCode("0005");
         head.setAssValue("00");
+        String date = "";
         
         for (Entry<String, BusinessDepartment> m :deptMap.entrySet())  {
             
             BusinessDepartment dept = m.getValue();
+            date = dept.getDate(); 
             if(dept.getSubjectCode().equals("2006")){
                 head.setIn(head.getIn().add(dept.getIn()));
                 head.setOut(head.getOut().add(dept.getOut()));
@@ -321,7 +330,7 @@ public class VoucherService {
             }else if(dept.getIn() != null && dept.getIn().compareTo(ZERO) > 0){
                 Element item = detailsIn.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText("银期转账（入）");
+                item.addElement("explanation").setText("银期转账（入）"+dept.getDate());
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
@@ -346,7 +355,7 @@ public class VoucherService {
         
         Element itemIn = detailsIn.addElement("item");
         itemIn.addElement("detailindex").setText(""+i++);
-        itemIn.addElement("explanation").setText(head.getDescription());
+        itemIn.addElement("explanation").setText(head.getDescription()+date);
         itemIn.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
         itemIn.addElement("debitamount").setText("0");
         itemIn.addElement("localdebitamount").setText("0");
@@ -400,10 +409,10 @@ public class VoucherService {
             if(bank.getOut() != null && bank.getOut().compareTo(ZERO) > 0){
                 Element item = detailsOut.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText("银期转账（出）"+bank.getBankName());
+                item.addElement("explanation").setText("银期转账（出）"+bank.getDate()+bank.getBankName());
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-                item.addElement("debitamount").setText(bank.getOut().toString());
-                item.addElement("localdebitamount").setText(bank.getOut().toString());
+                item.addElement("debitamount").setText("0");
+                item.addElement("localdebitamount").setText("0");
                 item.addElement("accsubjcode").setText(bank.getSubjectCode());//科目 TODO
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
@@ -411,10 +420,10 @@ public class VoucherService {
                 item.addElement("groupdebitamount").setText("0");
                 item.addElement("globaldebitamount").setText("0");
                 item.addElement("creditquantity").setText("0");//贷方数量
-                item.addElement("creditamount").setText("0");//贷方金额
+                item.addElement("creditamount").setText(bank.getOut().toString());//贷方金额
                 item.addElement("groupcreditamount").setText("0");
                 item.addElement("globalcreditamount").setText("0");
-                item.addElement("localcreditamount").setText("0");
+                item.addElement("localcreditamount").setText(bank.getOut().toString());
                 item.addElement("pk_currtype").setText("CNY");
                 item.addElement("pk_accasoa").setText(bank.getSubjectCode());//TODO
                 Element ass = item.addElement("ass").addElement("item");
@@ -430,10 +439,10 @@ public class VoucherService {
             if(dept.getIn() != null && dept.getIn().compareTo(ZERO) > 0){
                 Element item = detailsOut.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText("银期转账（出）");
+                item.addElement("explanation").setText("银期转账（出）"+dept.getDate());
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-                item.addElement("debitamount").setText("0");
-                item.addElement("localdebitamount").setText("0");
+                item.addElement("debitamount").setText(dept.getOut().toString());
+                item.addElement("localdebitamount").setText(dept.getOut().toString());
                 item.addElement("accsubjcode").setText(dept.getSubjectCode());//科目 
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
@@ -441,10 +450,10 @@ public class VoucherService {
                 item.addElement("groupdebitamount").setText("0");
                 item.addElement("globaldebitamount").setText("0");
                 item.addElement("creditquantity").setText("0");//贷方数量
-                item.addElement("creditamount").setText(dept.getOut().toString());//贷方金额
+                item.addElement("creditamount").setText("0");//贷方金额
                 item.addElement("groupcreditamount").setText("0");
                 item.addElement("globalcreditamount").setText("0");
-                item.addElement("localcreditamount").setText(dept.getOut().toString());
+                item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
                 item.addElement("pk_accasoa").setText(dept.getSubjectCode());//TODO
                 Element ass = item.addElement("ass").addElement("item");
@@ -457,10 +466,10 @@ public class VoucherService {
         //总部出金
         Element itemOut = detailsOut.addElement("item");
         itemOut.addElement("detailindex").setText(""+i++);
-        itemOut.addElement("explanation").setText(head.getDescription());
+        itemOut.addElement("explanation").setText(head.getDescription()+date);
         itemOut.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-        itemOut.addElement("debitamount").setText("0");
-        itemOut.addElement("localdebitamount").setText("0");
+        itemOut.addElement("debitamount").setText(head.getOut().toString());
+        itemOut.addElement("localdebitamount").setText(head.getOut().toString());
         itemOut.addElement("accsubjcode").setText(head.getSubjectCode());//科目 
         itemOut.addElement("price").setText("0");//单价
         itemOut.addElement("excrate2").setText("1");
@@ -468,10 +477,10 @@ public class VoucherService {
         itemOut.addElement("groupdebitamount").setText("0");
         itemOut.addElement("globaldebitamount").setText("0");
         itemOut.addElement("creditquantity").setText("0");//贷方数量
-        itemOut.addElement("creditamount").setText(head.getOut().toString());//贷方金额
+        itemOut.addElement("creditamount").setText("0");//贷方金额
         itemOut.addElement("groupcreditamount").setText("0");
         itemOut.addElement("globalcreditamount").setText("0");
-        itemOut.addElement("localcreditamount").setText(head.getOut().toString());
+        itemOut.addElement("localcreditamount").setText("0");
         itemOut.addElement("pk_currtype").setText("CNY");
         itemOut.addElement("pk_accasoa").setText(head.getSubjectCode());
         /*Element assOut = itemOut.addElement("ass").addElement("item");

@@ -17,6 +17,17 @@ public class BusinessDepartment {
     private BigDecimal in;
     
     private BigDecimal out;
+    
+    private String date;
+    
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getDeptName() {
         return deptName;
