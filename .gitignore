@@ -26,3 +26,5 @@ hs_err_pid*
 /.classpath
 /.project
 /.settings/
+/jre1.8/
+/logs/

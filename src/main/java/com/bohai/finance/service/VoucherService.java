@@ -192,7 +192,7 @@ public class VoucherService {
                 
                 Bank bank = bankMap.get(bankName);
                 if(bank == null){
-                    throw new Exception("银行信息未维护");
+                    throw new Exception("银行信息未维护："+bankName);
                 }else {
                     bank.setIn(bank.getIn().add(new BigDecimal(in)));
                     bank.setOut(bank.getOut().add(new BigDecimal(out)));
@@ -225,7 +225,7 @@ public class VoucherService {
                 
                 BusinessDepartment businessDepartment = deptMap.get(deptName);
                 if(businessDepartment == null){
-                    throw new Exception("营业部信息未维护");
+                    throw new Exception("营业部信息未维护："+deptName);
                 }else {
                     businessDepartment.setDate(dateStr);
                     businessDepartment.setIn(businessDepartment.getIn().add(new BigDecimal(in)));
