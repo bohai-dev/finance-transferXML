@@ -20,6 +20,19 @@ public class BusinessDepartment {
     
     private String date;
     
+    /**
+     * 账簿编号（营业部凭证用）
+     */
+    private String bookNo;
+    
+
+    public String getBookNo() {
+        return bookNo;
+    }
+
+    public void setBookNo(String bookNo) {
+        this.bookNo = bookNo;
+    }
 
     public String getDate() {
         return date;

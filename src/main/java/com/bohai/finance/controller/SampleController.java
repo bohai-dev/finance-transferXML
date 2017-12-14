@@ -12,7 +12,6 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-import com.bohai.finance.model.Account;
 import com.bohai.finance.model.Bank;
 import com.bohai.finance.service.VoucherService;
 import com.bohai.finance.util.ApplicationConfig;
@@ -24,6 +23,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -57,6 +57,30 @@ public class SampleController implements Initializable{
     @FXML
     private TabPane tabPane;
     
+    
+    
+    
+    @FXML
+    private DatePicker beginDate;
+    
+    @FXML
+    private DatePicker endDate;
+    
+    /**
+     * 营业部文件
+     */
+    @FXML
+    private Button businessFileButton;
+    
+    @FXML
+    private TextField businessTextField;
+    
+    @FXML
+    private Button businessGenerateButton;
+    
+    
+    private File businessFile;
+    
     private File file;
     
     @Override
@@ -88,6 +112,34 @@ public class SampleController implements Initializable{
             textField.setText("");
         }
     }
+    
+    
+    /**
+     * 点击按钮选择营业部文件
+     * @param event
+     */
+    @FXML
+    public void chooseBusinessFile(ActionEvent event) {
+        
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("请选择文件");
+        //读取上次目录
+        String lastUploadDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY);
+        
+        if(lastUploadDirectory != null){
+            chooser.setInitialDirectory(new File(lastUploadDirectory));
+        }
+        businessFile = chooser.showOpenDialog(new Stage());
+        if(businessFile != null) {
+            businessTextField.setText(businessFile.getAbsolutePath());
+            //缓存本次上传目录
+            ApplicationConfig.setProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY, businessFile.getParent());
+        }else {
+            businessTextField.setText("");
+        }
+    }
+    
+    
     
     /**
      * 生成凭证
@@ -137,14 +189,62 @@ public class SampleController implements Initializable{
                     warning.showAndWait();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    logger.error("生成凭证失败"+e);
-                    textArea.appendText("生成凭证文件失败："+e.getMessage()+"\n");
-                    Alert warning = new Alert(Alert.AlertType.ERROR,"生成失败！");
+                    logger.error("生成总部凭证失败"+e);
+                    textArea.appendText("生成总部凭证失败："+e.getMessage()+"\n");
+                    Alert warning = new Alert(Alert.AlertType.ERROR,"生成总部凭证失败！");
                     warning.showAndWait();
                 }
             }
         }
     }
+    
+    /**
+     * 按月生成营业部凭证
+     * @param event
+     */
+    @FXML
+    public void generateBusinessVoucher(ActionEvent event){
+        
+        if(businessFile == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择文件！");
+            warning.showAndWait();
+        }else {
+            
+            //文件选择器
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("保存文件");
+            chooser.setInitialFileName(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd")+"凭证.xml");
+            
+            //获取上次保存目录
+            String lastOutDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_OUT_DIRECTORY);
+            if(lastOutDirectory != null){
+                chooser.setInitialDirectory(new File(lastOutDirectory));
+            }
+            
+            File file1 = chooser.showSaveDialog(new Stage());
+            if(file1 != null) {
+                
+                //缓存本次生成目录
+                ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
+                VoucherService voucherService = new VoucherService();
+                try {
+                    
+                    voucherService.generateBusinessXML(businessFile, file1.getAbsolutePath());
+                    
+                    
+                    Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");
+                    warning.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error("生成营业部凭证文件失败"+e);
+                    textArea.appendText("生成营业部凭证文件失败："+e.getMessage()+"\n");
+                    Alert warning = new Alert(Alert.AlertType.ERROR,"生成营业部凭证文件失败！");
+                    warning.showAndWait();
+                }
+            }
+        }
+    }
+    
     
     @FXML
     public void createBankTab() throws IOException{

@@ -242,6 +242,9 @@ public class VoucherService {
     
     
     
+    
+    
+    
     public Document createDocument(Map<String, Bank> bankMap, Map<String, BusinessDepartment> deptMap) {
         Document document = DocumentHelper.createDocument();
         Element ufinterface = document.addElement("ufinterface")
@@ -496,5 +499,144 @@ public class VoucherService {
          */
         
         return document;
+    }
+    
+    
+    /**
+     * 生成营业部凭证xml文件
+     * @param infile
+     * @param targetPath
+     * @return
+     * @throws Exception
+     */
+    public void generateBusinessXML(File infile, String targetPath) throws Exception{
+        
+        Map<String, BusinessDepartment> deptMap= new HashMap<String, BusinessDepartment>();
+        DeptService deptService = new DeptService();
+        List<BusinessDepartment> depts = deptService.queryDepts();
+        if(depts !=null){
+            for (BusinessDepartment businessDepartment : depts) {
+                businessDepartment.setIn(ZERO);
+                businessDepartment.setOut(ZERO);
+                deptMap.put(businessDepartment.getDeptName(), businessDepartment);
+                
+            }
+        }
+        
+        
+        int dateIndex = 0;
+        
+        int depIndex = 0;
+        
+        int bankIndex = 0;
+        
+        int inIndex = 0;
+        
+        int outIndex = 0;
+        
+        Document document = this.parse(infile);
+        
+        Element root = document.getRootElement();
+        
+        Element workSheet = root.element("Worksheet");
+        
+        Element table = workSheet.element("Table");
+        
+        List<Element> rows = table.elements("Row");
+        
+        //获取标题索引
+        Element head = rows.get(2);
+        List<Element> headCells = head.elements("Cell");
+        for(int j = 0 ; j < headCells.size() ; j++){
+            
+            Element cell = headCells.get(j);
+            Element data = cell.element("Data");
+            
+            String value = data.getTextTrim();
+            
+            if("交易日".equals(value)){
+                dateIndex = j;
+            }else if ("银行".equals(value)) {
+                bankIndex = j;
+            }else if ("入金".equals(value)) {
+                inIndex = j;
+            }else if ("出金".equals(value)) {
+                outIndex = j;
+            }else if ("投资者名称".equals(value)) {
+                depIndex = j;
+            }
+            
+        }
+        
+        //以银行为维度
+        for(int i =3 ; i < rows.size() ; i++){
+            
+            Element row = rows.get(i);
+            
+            List<Element> cells = row.elements("Cell");
+            
+                Element firstCell = cells.get(0).element("Data");
+                String firstStr = firstCell.getText();
+                if(firstStr.indexOf("总计") > -1){
+                    break;
+                }
+                
+                Element dateCell = cells.get(dateIndex).element("Data");
+                String dateStr = dateCell.getTextTrim();
+                
+                Element bankCell = cells.get(bankIndex).element("Data");
+                String bankName = bankCell.getTextTrim();
+                Element inCell = cells.get(inIndex).element("Data");
+                String in = inCell.getTextTrim().replaceAll(",", "");
+                Element outCell = cells.get(outIndex).element("Data");
+                String out = outCell.getTextTrim().replaceAll(",", "");
+                
+                Bank bank = bankMap.get(bankName);
+                if(bank == null){
+                    throw new Exception("银行信息未维护："+bankName);
+                }else {
+                    bank.setIn(bank.getIn().add(new BigDecimal(in)));
+                    bank.setOut(bank.getOut().add(new BigDecimal(out)));
+                    bank.setDate(dateStr);
+                }
+                
+        }
+        
+        //以营业部为维度
+        for(int i =3 ; i < rows.size() ; i++){
+            
+            Element row = rows.get(i);
+            
+            List<Element> cells = row.elements("Cell");
+            
+                Element firstCell = cells.get(0).element("Data");
+                String firstStr = firstCell.getText();
+                if(firstStr.indexOf("总计") > -1){
+                    break;
+                }
+            
+                Element dateCell = cells.get(dateIndex).element("Data");
+                String dateStr = dateCell.getTextTrim();
+                Element deptCell = cells.get(depIndex).element("Data");
+                String deptName = deptCell.getTextTrim();
+                Element inCell = cells.get(inIndex).element("Data");
+                String in = inCell.getTextTrim().replaceAll(",", "");
+                Element outCell = cells.get(outIndex).element("Data");
+                String out = outCell.getTextTrim().replaceAll(",", "");
+                
+                BusinessDepartment businessDepartment = deptMap.get(deptName);
+                if(businessDepartment == null){
+                    throw new Exception("营业部信息未维护："+deptName);
+                }else {
+                    businessDepartment.setDate(dateStr);
+                    businessDepartment.setIn(businessDepartment.getIn().add(new BigDecimal(in)));
+                    businessDepartment.setOut(businessDepartment.getOut().add(new BigDecimal(out)));
+                }
+                
+        }
+        
+        Document outDoc = this.createDocument(bankMap, deptMap);
+        this.write(outDoc,targetPath);
+        
     }
 }

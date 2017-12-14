@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="589.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bohai.finance.controller.SampleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="482.0" prefWidth="420.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bohai.finance.controller.SampleController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
          <menus>
@@ -24,11 +24,11 @@
       </MenuBar>
    </top>
    <center>
-      <SplitPane dividerPositions="0.6820388349514563" orientation="VERTICAL" BorderPane.alignment="CENTER">
+      <SplitPane dividerPositions="0.5714285714285714" orientation="VERTICAL" prefHeight="413.0" prefWidth="420.0" BorderPane.alignment="CENTER">
          <items>
             <TabPane id="tabPane" fx:id="tabPane" prefHeight="200.0" prefWidth="200.0">
               <tabs>
-                <Tab closable="false" text="生成凭证文件">
+                <Tab closable="false" text="生成总部凭证文件">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="587.0">
                            <children>
@@ -39,6 +39,19 @@
                         </AnchorPane>
                   </content>
                 </Tab>
+                  <Tab closable="false" text="生成营业部凭证文件">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="587.0">
+                           <children>
+                              <Button id="fileButton" fx:id="businessFileButton" layoutX="270.0" layoutY="102.0" mnemonicParsing="false" onAction="#chooseBusinessFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
+                              <TextField id="textField" fx:id="businessTextField" editable="false" layoutX="65.0" layoutY="102.0" prefHeight="23.0" prefWidth="204.0" />
+                              <Button id="transferButton" fx:id="businessGenerateButton" layoutX="159.0" layoutY="153.0" mnemonicParsing="false" onAction="#generateBusinessVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
+                              <DatePicker fx:id="beginDate" layoutX="66.0" layoutY="46.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" showWeekNumbers="true" />
+                              <DatePicker fx:id="endDate" layoutX="217.0" layoutY="46.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" showWeekNumbers="true" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
               </tabs>
             </TabPane>
             <TabPane prefHeight="98.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">
