@@ -3,6 +3,8 @@ package com.bohai.finance.main;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -18,15 +20,21 @@ public class Upload {
         //URL url = new URL("http://101.95.0.114:8090/bohai-dataCenter");
         
         URLConnection connection = url.openConnection();
+        connection.setDoOutput(true);
         
-        /*BufferedOutputStream out = new BufferedOutputStream(connection.getOutputStream());
+        BufferedOutputStream out = new BufferedOutputStream(connection.getOutputStream());
         
         
-        byte[] bs = xml.getBytes();
+        InputStream inputStream = new FileInputStream(new File("C:\\Users\\BHQH-CXYWB\\Desktop\\2017-12-12凭证.xml"));
+        
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inputStream);
+                
+        byte[] bs = document.asXML().getBytes();
        
         out.write(bs);
        
-        out.close();*/
+        out.close();
        
         //获取服务器返回的信息
         BufferedInputStream in = new BufferedInputStream(connection.getInputStream());

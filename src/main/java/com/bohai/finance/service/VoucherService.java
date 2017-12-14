@@ -273,6 +273,7 @@ public class VoucherService {
         voucher_headIn.addElement("pk_org").setText("00");
         voucher_headIn.addElement("pk_org_v").setText("00");
         voucher_headIn.addElement("pk_system").setText("GL");
+        voucher_headIn.addElement("pk_vouchertype").setText("01");//凭证类别
         voucher_headIn.addElement("voucherkind").setText("0");
         voucher_headIn.addElement("discardflag").setText("N");
         voucher_headIn.addElement("attachment").setText("0");
@@ -395,6 +396,7 @@ public class VoucherService {
         voucher_headOut.addElement("pk_org").setText("00");
         voucher_headOut.addElement("pk_org_v").setText("00");
         voucher_headOut.addElement("pk_system").setText("GL");
+        voucher_headOut.addElement("pk_vouchertype").setText("01");//凭证类别
         voucher_headOut.addElement("voucherkind").setText("0");
         voucher_headOut.addElement("discardflag").setText("N");
         voucher_headOut.addElement("attachment").setText("0");
@@ -436,29 +438,31 @@ public class VoucherService {
         for (Entry<String, BusinessDepartment> m :deptMap.entrySet())  {
             
             BusinessDepartment dept = m.getValue();
-            if(dept.getIn() != null && dept.getIn().compareTo(ZERO) > 0){
-                Element item = detailsOut.addElement("item");
-                item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText("银期转账（出）"+dept.getDate());
-                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-                item.addElement("debitamount").setText(dept.getOut().toString());
-                item.addElement("localdebitamount").setText(dept.getOut().toString());
-                item.addElement("accsubjcode").setText(dept.getSubjectCode());//科目 
-                item.addElement("price").setText("0");//单价
-                item.addElement("excrate2").setText("1");
-                item.addElement("debitquantity").setText("0");//借方数量
-                item.addElement("groupdebitamount").setText("0");
-                item.addElement("globaldebitamount").setText("0");
-                item.addElement("creditquantity").setText("0");//贷方数量
-                item.addElement("creditamount").setText("0");//贷方金额
-                item.addElement("groupcreditamount").setText("0");
-                item.addElement("globalcreditamount").setText("0");
-                item.addElement("localcreditamount").setText("0");
-                item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText(dept.getSubjectCode());//TODO
-                Element ass = item.addElement("ass").addElement("item");
-                ass.addElement("pk_Checktype").setText(dept.getAssCode()); //辅助核算项编码
-                ass.addElement("pk_Checkvalue").setText(dept.getAssValue());
+            if(!dept.getSubjectCode().equals("2006")){
+                if(dept.getIn() != null && dept.getIn().compareTo(ZERO) > 0){
+                    Element item = detailsOut.addElement("item");
+                    item.addElement("detailindex").setText(""+i++);
+                    item.addElement("explanation").setText("银期转账（出）"+dept.getDate());
+                    item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                    item.addElement("debitamount").setText(dept.getOut().toString());
+                    item.addElement("localdebitamount").setText(dept.getOut().toString());
+                    item.addElement("accsubjcode").setText(dept.getSubjectCode());//科目 
+                    item.addElement("price").setText("0");//单价
+                    item.addElement("excrate2").setText("1");
+                    item.addElement("debitquantity").setText("0");//借方数量
+                    item.addElement("groupdebitamount").setText("0");
+                    item.addElement("globaldebitamount").setText("0");
+                    item.addElement("creditquantity").setText("0");//贷方数量
+                    item.addElement("creditamount").setText("0");//贷方金额
+                    item.addElement("groupcreditamount").setText("0");
+                    item.addElement("globalcreditamount").setText("0");
+                    item.addElement("localcreditamount").setText("0");
+                    item.addElement("pk_currtype").setText("CNY");
+                    item.addElement("pk_accasoa").setText(dept.getSubjectCode());//TODO
+                    Element ass = item.addElement("ass").addElement("item");
+                    ass.addElement("pk_Checktype").setText(dept.getAssCode()); //辅助核算项编码
+                    ass.addElement("pk_Checkvalue").setText(dept.getAssValue());
+                }
             }
         }
         

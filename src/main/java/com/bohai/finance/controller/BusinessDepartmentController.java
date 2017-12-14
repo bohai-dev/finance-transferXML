@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+
 import com.bohai.finance.model.BusinessDepartment;
 import com.bohai.finance.service.DeptService;
 
@@ -17,6 +19,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 public class BusinessDepartmentController implements Initializable{
+    
+    static Logger logger = Logger.getLogger(BusinessDepartmentController.class);
     
     @FXML
     private TableView<BusinessDepartment> tableView;
@@ -63,8 +67,8 @@ public class BusinessDepartmentController implements Initializable{
             
             tableView.setItems(list);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("初始化营业部信息失败"+e);
         }
     }
     

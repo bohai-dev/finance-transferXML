@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+
 import com.bohai.finance.model.Bank;
 import com.bohai.finance.service.BankService;
 
@@ -20,6 +22,8 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 public class BankController implements Initializable{
     
+    static Logger logger = Logger.getLogger(BankController.class);
+    
     @FXML
     private TableView<Bank> tableView;
     
@@ -34,6 +38,7 @@ public class BankController implements Initializable{
     
     @FXML
     private TableColumn<Bank,String> accountCol;
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -61,8 +66,8 @@ public class BankController implements Initializable{
             
             tableView.setItems(list);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
+            logger.error("初始化银行信息失败"+e);
         }
         
         accountCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Bank,String>>() {
@@ -83,7 +88,7 @@ public class BankController implements Initializable{
                 } catch (Exception e) {
                     
                     e.printStackTrace();
-                    //TODO
+                    logger.error("更新银行账户信息失败"+e);
                 }
                 
             }

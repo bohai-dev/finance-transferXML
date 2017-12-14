@@ -10,6 +10,4 @@ setlocal enableextensions enabledelayedexpansion
 set classpath=.
 for %%c in (%CURRENT_DIR%\lib\*.jar) do set classpath=!classpath!;%%c
 
-java -classpath %classpath% com.bohai.finance.main.Demo
-
-pause
+start javaw -Dfile.encoding=UTF-8 -classpath %classpath% com.bohai.finance.main.Demo

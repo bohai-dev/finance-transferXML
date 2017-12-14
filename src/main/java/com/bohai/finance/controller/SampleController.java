@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+
 import com.bohai.finance.model.Account;
 import com.bohai.finance.model.Bank;
 import com.bohai.finance.service.VoucherService;
@@ -31,6 +33,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class SampleController implements Initializable{
+    
+    static Logger logger = Logger.getLogger(SampleController.class);
 
     @FXML
     private Button fileButton;
@@ -133,6 +137,7 @@ public class SampleController implements Initializable{
                     warning.showAndWait();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    logger.error("生成凭证失败"+e);
                     textArea.appendText("生成凭证文件失败："+e.getMessage()+"\n");
                     Alert warning = new Alert(Alert.AlertType.ERROR,"生成失败！");
                     warning.showAndWait();
