@@ -28,3 +28,4 @@ hs_err_pid*
 /.settings/
 /jre1.8/
 /logs/
+/jre/
