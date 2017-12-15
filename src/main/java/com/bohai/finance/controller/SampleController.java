@@ -166,10 +166,11 @@ public class SampleController implements Initializable{
             warning.showAndWait();
         }else {
             
+            String date = headBeginDate.getValue().format(dateTimeFormatter)+"-"+headEndDate.getValue().format(dateTimeFormatter);
             //文件选择器
             FileChooser chooser = new FileChooser();
             chooser.setTitle("保存文件");
-            chooser.setInitialFileName(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd")+"凭证.xml");
+            chooser.setInitialFileName("总部出入金凭证"+date+".xml");
             
             //获取上次保存目录
             String lastOutDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_OUT_DIRECTORY);
@@ -184,8 +185,6 @@ public class SampleController implements Initializable{
                 ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
                 VoucherService voucherService = new VoucherService();
                 try {
-                    
-                    String date = headBeginDate.getValue().format(dateTimeFormatter)+"-"+headEndDate.getValue().format(dateTimeFormatter);
                     
                     Map<String, Bank> map = voucherService.generateXML(file, file1.getAbsolutePath(),date);
                     
@@ -233,10 +232,11 @@ public class SampleController implements Initializable{
             warning.showAndWait();
         }else {
             
+            String date = beginDate.getValue().format(dateTimeFormatter)+"-"+endDate.getValue().format(dateTimeFormatter);
             //文件选择器
             FileChooser chooser = new FileChooser();
             chooser.setTitle("保存文件");
-            chooser.setInitialFileName(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd")+"凭证.xml");
+            chooser.setInitialFileName("营业部出入金凭证"+date+".xml");
             
             //获取上次保存目录
             String lastOutDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_OUT_DIRECTORY);
@@ -252,7 +252,6 @@ public class SampleController implements Initializable{
                 VoucherService voucherService = new VoucherService();
                 try {
                     
-                    String date = beginDate.getValue().format(dateTimeFormatter)+"-"+endDate.getValue().format(dateTimeFormatter);
                     voucherService.generateBusinessXML(businessFile, file1.getAbsolutePath(),date);
                     
                     Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");

@@ -597,6 +597,8 @@ public class VoucherService {
                 }else {
                     BusinessDepartment book = bookMap.get(businessDepartment.getBookNo());
                     if(book == null){
+                        businessDepartment.setIn(new BigDecimal(in));
+                        businessDepartment.setOut(new BigDecimal(out));
                         bookMap.put(businessDepartment.getBookNo(), businessDepartment);
                     }else {
                         book.setIn(businessDepartment.getIn().add(new BigDecimal(in)));
