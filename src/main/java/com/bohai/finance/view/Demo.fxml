@@ -48,8 +48,8 @@
                               <Button id="fileButton" fx:id="businessFileButton" layoutX="270.0" layoutY="102.0" mnemonicParsing="false" onAction="#chooseBusinessFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
                               <TextField id="textField" fx:id="businessTextField" editable="false" layoutX="65.0" layoutY="102.0" prefHeight="23.0" prefWidth="204.0" />
                               <Button id="transferButton" fx:id="businessGenerateButton" layoutX="159.0" layoutY="153.0" mnemonicParsing="false" onAction="#generateBusinessVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
-                              <DatePicker fx:id="beginDate" layoutX="65.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" showWeekNumbers="true" />
-                              <DatePicker fx:id="endDate" layoutX="217.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" showWeekNumbers="true" />
+                              <DatePicker fx:id="beginDate" layoutX="65.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" />
+                              <DatePicker fx:id="endDate" layoutX="217.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" />
                            </children>
                         </AnchorPane>
                      </content>
