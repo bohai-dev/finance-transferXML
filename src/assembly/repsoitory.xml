@@ -12,6 +12,7 @@
     <fileSet>
       <directory>${project.basedir}/bin</directory>
       <outputDirectory>./bin</outputDirectory>
+      <fileMode>0755</fileMode>
     </fileSet>
     <fileSet>
       <directory>${project.basedir}/jre</directory>

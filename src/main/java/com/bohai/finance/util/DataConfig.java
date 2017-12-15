@@ -2,7 +2,7 @@ package com.bohai.finance.util;
 
 public class DataConfig {
     
-    public static String BANK_DATA_URL = "data\\bank.xml";
+    public static String BANK_DATA_URL = "data/bank.xml";
     
     public static String BANK_BANK_NAME = "bankName";
     
@@ -13,7 +13,7 @@ public class DataConfig {
     public static String BANK_ACCOUNT_NO = "accountNo";
     
     
-    public static String DEPT_DATA_URL = "data\\dept.xml";
+    public static String DEPT_DATA_URL = "data/dept.xml";
     
     /**
      * 营业部名称
