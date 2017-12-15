@@ -32,9 +32,11 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="587.0">
                            <children>
-                              <Button id="fileButton" fx:id="fileButton" layoutX="262.0" layoutY="22.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
-                              <TextField id="textField" fx:id="textField" editable="false" layoutX="57.0" layoutY="22.0" prefHeight="23.0" prefWidth="204.0" />
-                              <Button id="transferButton" fx:id="transferButton" layoutX="151.0" layoutY="78.0" mnemonicParsing="false" onAction="#generateVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
+                              <Button id="fileButton" fx:id="fileButton" layoutX="270.0" layoutY="103.0" mnemonicParsing="false" onAction="#chooseFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
+                              <TextField id="textField" fx:id="textField" editable="false" layoutX="65.0" layoutY="103.0" prefHeight="23.0" prefWidth="204.0" />
+                              <Button id="transferButton" fx:id="transferButton" layoutX="159.0" layoutY="154.0" mnemonicParsing="false" onAction="#generateVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
+                              <DatePicker fx:id="headBeginDate" layoutX="65.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" />
+                              <DatePicker fx:id="headEndDate" layoutX="217.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -46,8 +48,8 @@
                               <Button id="fileButton" fx:id="businessFileButton" layoutX="270.0" layoutY="102.0" mnemonicParsing="false" onAction="#chooseBusinessFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
                               <TextField id="textField" fx:id="businessTextField" editable="false" layoutX="65.0" layoutY="102.0" prefHeight="23.0" prefWidth="204.0" />
                               <Button id="transferButton" fx:id="businessGenerateButton" layoutX="159.0" layoutY="153.0" mnemonicParsing="false" onAction="#generateBusinessVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
-                              <DatePicker fx:id="beginDate" layoutX="66.0" layoutY="46.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" showWeekNumbers="true" />
-                              <DatePicker fx:id="endDate" layoutX="217.0" layoutY="46.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" showWeekNumbers="true" />
+                              <DatePicker fx:id="beginDate" layoutX="65.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" showWeekNumbers="true" />
+                              <DatePicker fx:id="endDate" layoutX="217.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" showWeekNumbers="true" />
                            </children>
                         </AnchorPane>
                      </content>

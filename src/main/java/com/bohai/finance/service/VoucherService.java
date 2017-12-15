@@ -96,7 +96,7 @@ public class VoucherService {
     }
     
     
-    public Map<String,Bank> generateXML(File infile, String targetPath) throws Exception{
+    public Map<String,Bank> generateXML(File infile, String targetPath, String date) throws Exception{
         
         Map<String, Bank> bankMap= new HashMap<String, Bank>();
         BankService bankService = new BankService();
@@ -196,7 +196,7 @@ public class VoucherService {
                 }else {
                     bank.setIn(bank.getIn().add(new BigDecimal(in)));
                     bank.setOut(bank.getOut().add(new BigDecimal(out)));
-                    bank.setDate(dateStr);
+                    bank.setDate(date);
                 }
                 
         }
@@ -442,7 +442,7 @@ public class VoucherService {
             
             BusinessDepartment dept = m.getValue();
             if(!dept.getSubjectCode().equals("2006")){
-                if(dept.getIn() != null && dept.getIn().compareTo(ZERO) > 0){
+                if(dept.getOut() != null && dept.getOut().compareTo(ZERO) > 0){
                     Element item = detailsOut.addElement("item");
                     item.addElement("detailindex").setText(""+i++);
                     item.addElement("explanation").setText("银期转账（出）"+dept.getDate());
@@ -504,12 +504,14 @@ public class VoucherService {
     
     /**
      * 生成营业部凭证xml文件
-     * @param infile
-     * @param targetPath
+     * @param infile 文件
+     * @param targetPath 生成目录
+     * @param date 日期区间
      * @return
      * @throws Exception
      */
-    public void generateBusinessXML(File infile, String targetPath) throws Exception{
+    public void generateBusinessXML(File infile, String targetPath, String date) throws Exception{
+        
         
         Map<String, BusinessDepartment> deptMap= new HashMap<String, BusinessDepartment>();
         DeptService deptService = new DeptService();
@@ -568,40 +570,7 @@ public class VoucherService {
             
         }
         
-        //以银行为维度
-        for(int i =3 ; i < rows.size() ; i++){
-            
-            Element row = rows.get(i);
-            
-            List<Element> cells = row.elements("Cell");
-            
-                Element firstCell = cells.get(0).element("Data");
-                String firstStr = firstCell.getText();
-                if(firstStr.indexOf("总计") > -1){
-                    break;
-                }
-                
-                Element dateCell = cells.get(dateIndex).element("Data");
-                String dateStr = dateCell.getTextTrim();
-                
-                Element bankCell = cells.get(bankIndex).element("Data");
-                String bankName = bankCell.getTextTrim();
-                Element inCell = cells.get(inIndex).element("Data");
-                String in = inCell.getTextTrim().replaceAll(",", "");
-                Element outCell = cells.get(outIndex).element("Data");
-                String out = outCell.getTextTrim().replaceAll(",", "");
-                
-                Bank bank = bankMap.get(bankName);
-                if(bank == null){
-                    throw new Exception("银行信息未维护："+bankName);
-                }else {
-                    bank.setIn(bank.getIn().add(new BigDecimal(in)));
-                    bank.setOut(bank.getOut().add(new BigDecimal(out)));
-                    bank.setDate(dateStr);
-                }
-                
-        }
-        
+        Map<String, BusinessDepartment> bookMap = new HashMap<String, BusinessDepartment>();
         //以营业部为维度
         for(int i =3 ; i < rows.size() ; i++){
             
@@ -615,8 +584,6 @@ public class VoucherService {
                     break;
                 }
             
-                Element dateCell = cells.get(dateIndex).element("Data");
-                String dateStr = dateCell.getTextTrim();
                 Element deptCell = cells.get(depIndex).element("Data");
                 String deptName = deptCell.getTextTrim();
                 Element inCell = cells.get(inIndex).element("Data");
@@ -628,15 +595,169 @@ public class VoucherService {
                 if(businessDepartment == null){
                     throw new Exception("营业部信息未维护："+deptName);
                 }else {
-                    businessDepartment.setDate(dateStr);
-                    businessDepartment.setIn(businessDepartment.getIn().add(new BigDecimal(in)));
-                    businessDepartment.setOut(businessDepartment.getOut().add(new BigDecimal(out)));
+                    BusinessDepartment book = bookMap.get(businessDepartment.getBookNo());
+                    if(book == null){
+                        bookMap.put(businessDepartment.getBookNo(), businessDepartment);
+                    }else {
+                        book.setIn(businessDepartment.getIn().add(new BigDecimal(in)));
+                        book.setOut(businessDepartment.getOut().add(new BigDecimal(out)));
+                    }
+                    
                 }
                 
         }
         
-        Document outDoc = this.createDocument(bankMap, deptMap);
+        Document outDoc = this.createBusinessDocument(bookMap , date);
+        
         this.write(outDoc,targetPath);
         
+    }
+    
+    
+    public Document createBusinessDocument(Map<String, BusinessDepartment> bookMap ,String date) {
+        Document document = DocumentHelper.createDocument();
+        Element ufinterface = document.addElement("ufinterface")
+                .addAttribute("account", "002")
+                .addAttribute("billtype", "vouchergl")
+                .addAttribute("businessunitcode", "develop")
+                .addAttribute("filename", "")
+                .addAttribute("groupcode", "01")
+                .addAttribute("isexchange", "Y")
+                .addAttribute("orgcode", "00")
+                .addAttribute("receiver", "")
+                .addAttribute("replace", "Y")
+                .addAttribute("roottag", "")
+                .addAttribute("sender", "NC_OA");
+                
+        
+        
+        for (Entry<String, BusinessDepartment> m :bookMap.entrySet())  {
+            
+            BusinessDepartment book = m.getValue();
+            int i = 1;
+            /**
+             * 入金凭证开始
+             */
+            Element voucher = ufinterface.addElement("voucher");
+            
+            Element voucher_head = voucher.addElement("voucher_head");
+            voucher_head.addElement("year").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+            //账簿号
+            voucher_head.addElement("pk_accountingbook").setText(book.getBookNo());
+            
+            voucher_head.addElement("period").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+            voucher_head.addElement("prepareddate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+            voucher_head.addElement("pk_prepared").setText("yy01");
+            voucher_head.addElement("pk_org").setText("00");
+            voucher_head.addElement("pk_org_v").setText("00");
+            voucher_head.addElement("pk_system").setText("GL");
+            voucher_head.addElement("pk_vouchertype").setText("01");//凭证类别
+            voucher_head.addElement("voucherkind").setText("0");
+            voucher_head.addElement("discardflag").setText("N");
+            voucher_head.addElement("attachment").setText("0");
+            voucher_head.addElement("signflag").setText("N");
+            
+            Element details = voucher_head.addElement("details");
+            
+            //入金
+            if(book.getIn() != null && book.getIn().compareTo(ZERO) > 0){
+                //借方
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("银期转账（入）"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText(book.getIn().toString());
+                item.addElement("localdebitamount").setText(book.getIn().toString());
+                item.addElement("accsubjcode").setText("22410101");//科目  保证金 
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText("0");//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText("0");
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("22410101");//TODO
+                Element ass = item.addElement("ass").addElement("item");
+                ass.addElement("pk_Checktype").setText("0005"); //辅助核算项编码   内部客商
+                ass.addElement("pk_Checkvalue").setText("00");  //和总部挂往来
+                
+                //贷方
+                Element item1 = details.addElement("item");
+                item1.addElement("detailindex").setText(""+i++);
+                item1.addElement("explanation").setText("银期转账（入）"+date);
+                item1.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item1.addElement("debitamount").setText("0");
+                item1.addElement("localdebitamount").setText("0");
+                item1.addElement("accsubjcode").setText("2006");//科目  应付货币保证金 
+                item1.addElement("price").setText("0");//单价
+                item1.addElement("excrate2").setText("1");
+                item1.addElement("debitquantity").setText("0");//借方数量
+                item1.addElement("groupdebitamount").setText("0");
+                item1.addElement("globaldebitamount").setText("0");
+                item1.addElement("creditquantity").setText("0");//贷方数量
+                item1.addElement("creditamount").setText(book.getIn().toString());//贷方金额
+                item1.addElement("groupcreditamount").setText("0");
+                item1.addElement("globalcreditamount").setText("0");
+                item1.addElement("localcreditamount").setText(book.getIn().toString());
+                item1.addElement("pk_currtype").setText("CNY");
+                item1.addElement("pk_accasoa").setText("2006");//
+            }
+            
+            //出金
+            if(book.getOut() != null && book.getOut().compareTo(ZERO) > 0){
+                //借方
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("银期转账（出）"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText(book.getOut().toString());
+                item.addElement("localdebitamount").setText(book.getOut().toString());
+                item.addElement("accsubjcode").setText("2006");//科目  保证金 
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText("0");//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText("0");
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("2006");//
+                
+                
+                //贷方
+                Element item1 = details.addElement("item");
+                item1.addElement("detailindex").setText(""+i++);
+                item1.addElement("explanation").setText("银期转账（出）"+date);
+                item1.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item1.addElement("debitamount").setText("0");
+                item1.addElement("localdebitamount").setText("0");
+                item1.addElement("accsubjcode").setText("22410101");//科目  应付货币保证金 
+                item1.addElement("price").setText("0");//单价
+                item1.addElement("excrate2").setText("1");
+                item1.addElement("debitquantity").setText("0");//借方数量
+                item1.addElement("groupdebitamount").setText("0");
+                item1.addElement("globaldebitamount").setText("0");
+                item1.addElement("creditquantity").setText("0");//贷方数量
+                item1.addElement("creditamount").setText(book.getOut().toString());//贷方金额
+                item1.addElement("groupcreditamount").setText("0");
+                item1.addElement("globalcreditamount").setText("0");
+                item1.addElement("localcreditamount").setText(book.getOut().toString());
+                item1.addElement("pk_currtype").setText("CNY");
+                item1.addElement("pk_accasoa").setText("22410101");//TODO
+                Element ass = item1.addElement("ass").addElement("item");
+                ass.addElement("pk_Checktype").setText("0005"); //辅助核算项编码   内部客商
+                ass.addElement("pk_Checkvalue").setText("00");  //和总部挂往来
+            }
+        }
+        
+        
+        return document;
     }
 }

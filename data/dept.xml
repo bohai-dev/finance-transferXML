@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <root>
-    <大连分公司 deptName="01-大连分公司" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="31"/>
-    <长春营业部 deptName="02-长春营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="35"/>
-    <北京营业部 deptName="03-北京营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="34"/>
-    <郑州营业部 deptName="05-郑州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="46"/>
-    <上海营业部 deptName="06-上海营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="43"/>
-    <重庆营业部 deptName="08-重庆营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="37"/>
-    <广州营业部 deptName="09-广州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="39"/>
-    <福州营业部 deptName="10-福州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="38"/>
-    <营销总部 deptName="11-营销总部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00"/>
-    <沈阳营业部 deptName="12-沈阳营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="45"/>
-    <创新业务部 deptName="15-创新业务部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="AA"/>
-    <营销一部 deptName="18-营销一部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00"/>
-    <济南营业部 deptName="21-济南营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="41"/>
-    <营销四部 deptName="26-营销四部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00"/>
-    <营销五部 deptName="28-营销五部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00"/>
-    <北方事业部 deptName="29-北方事业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="47"/>
-    <成都营业部 deptName="31-成都营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="36"/>
-    <深圳营业部 deptName="32-深圳营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="44"/>
-    <杭州营业部 deptName="36-杭州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="40"/>
-    <厦门营业部 deptName="37-厦门营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="42"/>
-    <华东事业部 deptName="39-华东事业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="48"/>
-    <资产管理业务部 deptName="16-资产管理业务部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00"/>
-    <华东事业二部 deptName="40-华东事业二部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="48"/>
-    <江苏分公司 deptName="41-江苏分公司" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="32"/>
+    <大连分公司 deptName="01-大连分公司" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="31" bookNo="31-0002"/>
+    <长春营业部 deptName="02-长春营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="35" bookNo="35-0002"/>
+    <北京营业部 deptName="03-北京营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="34" bookNo="34-0002"/>
+    <郑州营业部 deptName="05-郑州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="46" bookNo="46-0002"/>
+    <上海营业部 deptName="06-上海营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="43" bookNo="43-0002"/>
+    <重庆营业部 deptName="08-重庆营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="37" bookNo="37-0002"/>
+    <广州营业部 deptName="09-广州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="39" bookNo="39-0002"/>
+    <福州营业部 deptName="10-福州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="38" bookNo="38-0002"/>
+    <营销总部 deptName="11-营销总部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00" bookNo="00-0002"/>
+    <沈阳营业部 deptName="12-沈阳营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="45" bookNo="45-0002"/>
+    <创新业务部 deptName="15-创新业务部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="AA" bookNo="AA-0002"/>
+    <营销一部 deptName="18-营销一部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00" bookNo="00-0002"/>
+    <济南营业部 deptName="21-济南营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="41" bookNo="41-0002"/>
+    <营销四部 deptName="26-营销四部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00" bookNo="00-0002"/>
+    <营销五部 deptName="28-营销五部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00" bookNo="00-0002"/>
+    <北方事业部 deptName="29-北方事业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="47" bookNo="47-0002"/>
+    <成都营业部 deptName="31-成都营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="36" bookNo="36-0002"/>
+    <深圳营业部 deptName="32-深圳营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="44" bookNo="44-0002"/>
+    <杭州营业部 deptName="36-杭州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="40" bookNo="40-0002"/>
+    <厦门营业部 deptName="37-厦门营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="42" bookNo="42-0002"/>
+    <华东事业部 deptName="39-华东事业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="48" bookNo="48-0002"/>
+    <资产管理业务部 deptName="16-资产管理业务部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00" bookNo="00-0002"/>
+    <华东事业二部 deptName="40-华东事业二部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="48" bookNo="48-0002"/>
+    <江苏分公司 deptName="41-江苏分公司" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="32" bookNo="32-0002"/>
 </root>

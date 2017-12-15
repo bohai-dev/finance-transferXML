@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class SampleController implements Initializable{
     private TabPane tabPane;
     
     
+    @FXML
+    private DatePicker headBeginDate;
+    
+    @FXML
+    private DatePicker headEndDate;
     
     
     @FXML
@@ -148,7 +154,14 @@ public class SampleController implements Initializable{
     @FXML
     public void generateVoucher(ActionEvent event){
         
-        if(file == null){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        if(headBeginDate.getValue() == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择起始日期！");
+            warning.showAndWait();
+        }else if (headEndDate.getValue() == null) {
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择结束日期！");
+            warning.showAndWait();
+        }else if(file == null){
             Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择文件！");
             warning.showAndWait();
         }else {
@@ -171,7 +184,10 @@ public class SampleController implements Initializable{
                 ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
                 VoucherService voucherService = new VoucherService();
                 try {
-                    Map<String, Bank> map = voucherService.generateXML(file, file1.getAbsolutePath());
+                    
+                    String date = headBeginDate.getValue().format(dateTimeFormatter)+"-"+headEndDate.getValue().format(dateTimeFormatter);
+                    
+                    Map<String, Bank> map = voucherService.generateXML(file, file1.getAbsolutePath(),date);
                     
                     BigDecimal totalIn = new BigDecimal("0");
                     BigDecimal totalOut = new BigDecimal("0");
@@ -205,7 +221,14 @@ public class SampleController implements Initializable{
     @FXML
     public void generateBusinessVoucher(ActionEvent event){
         
-        if(businessFile == null){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        if(beginDate.getValue() == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择起始日期！");
+            warning.showAndWait();
+        }else if (endDate.getValue() == null) {
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择结束日期！");
+            warning.showAndWait();
+        }else if(businessFile == null){
             Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择文件！");
             warning.showAndWait();
         }else {
@@ -229,8 +252,8 @@ public class SampleController implements Initializable{
                 VoucherService voucherService = new VoucherService();
                 try {
                     
-                    voucherService.generateBusinessXML(businessFile, file1.getAbsolutePath());
-                    
+                    String date = beginDate.getValue().format(dateTimeFormatter)+"-"+endDate.getValue().format(dateTimeFormatter);
+                    voucherService.generateBusinessXML(businessFile, file1.getAbsolutePath(),date);
                     
                     Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");
                     warning.showAndWait();

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <root>
     <建设银行 bankName="建设银行" subjectCode="10020101" subjectName="建设银行" accountNo="21201504000050000508"/>
     <工商银行 bankName="工商银行" subjectCode="10020102" subjectName="工商银行" accountNo="1001358129004606933"/>
@@ -12,5 +13,4 @@
     <浦发银行 bankName="浦发银行" subjectCode="10020110" subjectName="浦发银行" accountNo="752001538070020010"/>
     <光大银行 bankName="光大银行" subjectCode="10020111" subjectName="光大银行" accountNo="358301880000334210020"/>
     <平安银行 bankName="平安银行" subjectCode="10020112" subjectName="平安银行" accountNo="19900002600020"/>
-
 </root>

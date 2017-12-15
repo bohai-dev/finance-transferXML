@@ -29,6 +29,9 @@ public class BusinessDepartmentController implements Initializable{
     private TableColumn<BusinessDepartment, String> deptNameCol;
     
     @FXML
+    private TableColumn<BusinessDepartment, String> bookNo;
+    
+    @FXML
     private TableColumn<BusinessDepartment, String> subjectCodeCol;
     
     @FXML
@@ -52,6 +55,9 @@ public class BusinessDepartmentController implements Initializable{
             
             deptNameCol.setCellValueFactory(new PropertyValueFactory<BusinessDepartment, String>("deptName"));
             deptNameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+            
+            bookNo.setCellValueFactory(new PropertyValueFactory<BusinessDepartment, String>("bookNo"));
+            bookNo.setCellFactory(TextFieldTableCell.forTableColumn());
             
             subjectCodeCol.setCellValueFactory(new PropertyValueFactory<BusinessDepartment, String>("subjectCode"));
             subjectCodeCol.setCellFactory(TextFieldTableCell.forTableColumn());

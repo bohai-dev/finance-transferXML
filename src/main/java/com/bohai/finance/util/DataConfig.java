@@ -39,4 +39,9 @@ public class DataConfig {
      * 辅助核算项值
      */
     public static String DEPT_ASS_VALUE = "assValue";
+    
+    /**
+     * 账簿编号
+     */
+    public static String DEPT_BOOK_NO = "bookNo";
 }

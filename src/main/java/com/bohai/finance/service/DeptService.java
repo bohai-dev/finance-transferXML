@@ -26,6 +26,7 @@ public class DeptService {
             Element element = it.next();
             BusinessDepartment dept = new BusinessDepartment();
             dept.setDeptName(element.attributeValue(DataConfig.DEPT_DEPT_NAME));
+            dept.setBookNo(element.attributeValue(DataConfig.DEPT_BOOK_NO));
             dept.setSubjectCode(element.attributeValue(DataConfig.DEPT_SUBJECT_CODE));
             dept.setSubjectName(element.attributeValue(DataConfig.DEPT_SUBJECT_NAME));
             dept.setAssCode(element.attributeValue(DataConfig.DEPT_ASS_CODE));
