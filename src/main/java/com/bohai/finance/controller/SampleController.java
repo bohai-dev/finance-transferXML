@@ -109,7 +109,16 @@ public class SampleController implements Initializable{
         if(lastUploadDirectory != null){
             chooser.setInitialDirectory(new File(lastUploadDirectory));
         }
-        file = chooser.showOpenDialog(new Stage());
+        
+        try {
+            file = chooser.showOpenDialog(new Stage());
+        } catch (Exception e) {
+            //由于不同操作系统，文件路径格式不一致
+            logger.error("打开目录失败",e);
+            chooser.setInitialDirectory(null);
+            file = chooser.showOpenDialog(new Stage());
+        }
+        
         if(file != null) {
             textField.setText(file.getAbsolutePath());
             //缓存本次上传目录
@@ -135,7 +144,17 @@ public class SampleController implements Initializable{
         if(lastUploadDirectory != null){
             chooser.setInitialDirectory(new File(lastUploadDirectory));
         }
-        businessFile = chooser.showOpenDialog(new Stage());
+        
+        try {
+            
+            businessFile = chooser.showOpenDialog(new Stage());
+        } catch (Exception e) {
+            //由于不同操作系统，文件路径格式不一致
+            logger.error("打开目录失败",e);
+            chooser.setInitialDirectory(null);
+            businessFile = chooser.showOpenDialog(new Stage());
+        }
+        
         if(businessFile != null) {
             businessTextField.setText(businessFile.getAbsolutePath());
             //缓存本次上传目录
@@ -178,7 +197,15 @@ public class SampleController implements Initializable{
                 chooser.setInitialDirectory(new File(lastOutDirectory));
             }
             
-            File file1 = chooser.showSaveDialog(new Stage());
+            File file1 = null;
+            try {
+                file1 = chooser.showSaveDialog(new Stage());
+            } catch (Exception e1) {
+                logger.error("打开目录失败",e1);
+                chooser.setInitialDirectory(null);
+                file1 = chooser.showSaveDialog(new Stage());
+            }
+            
             if(file1 != null) {
                 
                 //缓存本次生成目录
@@ -244,7 +271,15 @@ public class SampleController implements Initializable{
                 chooser.setInitialDirectory(new File(lastOutDirectory));
             }
             
-            File file1 = chooser.showSaveDialog(new Stage());
+            File file1 = null;
+            try {
+                file1 = chooser.showSaveDialog(new Stage());
+            } catch (Exception e1) {
+                logger.error("打开目录失败",e1);
+                chooser.setInitialDirectory(null);
+                file1 = chooser.showSaveDialog(new Stage());
+            }
+            
             if(file1 != null) {
                 
                 //缓存本次生成目录
