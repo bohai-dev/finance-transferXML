@@ -8,12 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -33,6 +35,8 @@ import com.bohai.finance.util.DateFormatterUtil;
  *
  */
 public class VoucherService {
+    
+    static Logger logger = Logger.getLogger(VoucherService.class);
 
     static final BigDecimal ZERO = new BigDecimal("0");
     
@@ -234,7 +238,7 @@ public class VoucherService {
                 
         }
         
-        Document outDoc = this.createDocument(bankMap, deptMap);
+        Document outDoc = this.createDocument(bankMap, deptMap, date);
         this.write(outDoc,targetPath);
         
         return bankMap;
@@ -245,7 +249,7 @@ public class VoucherService {
     
     
     
-    public Document createDocument(Map<String, Bank> bankMap, Map<String, BusinessDepartment> deptMap) {
+    public Document createDocument(Map<String, Bank> bankMap, Map<String, BusinessDepartment> deptMap, String date) throws ParseException {
         Document document = DocumentHelper.createDocument();
         Element ufinterface = document.addElement("ufinterface")
                 .addAttribute("account", "002")
@@ -262,6 +266,10 @@ public class VoucherService {
                 
         
         int i = 1;
+        String preparedDate = date.substring(9, 17);
+        logger.debug("结束日期："+preparedDate);
+        preparedDate = DateFormatterUtil.getDateStrByFormatter(DateFormatterUtil.getDateByFormatter(preparedDate, "yyyyMMdd"), "yyyy-MM-dd");
+        logger.debug("制单日期："+preparedDate);
         /**
          * 入金凭证开始
          */
@@ -270,8 +278,8 @@ public class VoucherService {
         Element voucher_headIn = voucherIn.addElement("voucher_head");
         voucher_headIn.addElement("year").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
         voucher_headIn.addElement("pk_accountingbook").setText("00-0002");
-        voucher_headIn.addElement("period").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-        voucher_headIn.addElement("prepareddate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+        voucher_headIn.addElement("period").setText(date);
+        voucher_headIn.addElement("prepareddate").setText(preparedDate);
         voucher_headIn.addElement("pk_prepared").setText("yy01");
         voucher_headIn.addElement("pk_org").setText("00");
         voucher_headIn.addElement("pk_org_v").setText("00");
@@ -321,12 +329,11 @@ public class VoucherService {
         head.setOut(ZERO);
         head.setAssCode("0005");
         head.setAssValue("00");
-        String date = "";
         
         for (Entry<String, BusinessDepartment> m :deptMap.entrySet())  {
             
             BusinessDepartment dept = m.getValue();
-            date = dept.getDate(); 
+
             if(dept.getSubjectCode().equals("2006")){
                 head.setIn(head.getIn().add(dept.getIn()));
                 head.setOut(head.getOut().add(dept.getOut()));
@@ -334,7 +341,7 @@ public class VoucherService {
             }else if(dept.getIn() != null && dept.getIn().compareTo(ZERO) > 0){
                 Element item = detailsIn.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText("银期转账（入）"+dept.getDate());
+                item.addElement("explanation").setText("银期转账（入）"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
@@ -393,8 +400,8 @@ public class VoucherService {
         Element voucher_headOut = voucherOut.addElement("voucher_head");
         voucher_headOut.addElement("year").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
         voucher_headOut.addElement("pk_accountingbook").setText("00-0002");
-        voucher_headOut.addElement("period").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-        voucher_headOut.addElement("prepareddate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+        voucher_headOut.addElement("period").setText(date);
+        voucher_headOut.addElement("prepareddate").setText(preparedDate);
         voucher_headOut.addElement("pk_prepared").setText("yy01");
         voucher_headOut.addElement("pk_org").setText("00");
         voucher_headOut.addElement("pk_org_v").setText("00");
@@ -414,7 +421,7 @@ public class VoucherService {
             if(bank.getOut() != null && bank.getOut().compareTo(ZERO) > 0){
                 Element item = detailsOut.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
-                item.addElement("explanation").setText("银期转账（出）"+bank.getDate()+bank.getBankName());
+                item.addElement("explanation").setText("银期转账（出）"+ date +bank.getBankName());
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
@@ -445,7 +452,7 @@ public class VoucherService {
                 if(dept.getOut() != null && dept.getOut().compareTo(ZERO) > 0){
                     Element item = detailsOut.addElement("item");
                     item.addElement("detailindex").setText(""+i++);
-                    item.addElement("explanation").setText("银期转账（出）"+dept.getDate());
+                    item.addElement("explanation").setText("银期转账（出）"+ date);
                     item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                     item.addElement("debitamount").setText(dept.getOut().toString());
                     item.addElement("localdebitamount").setText(dept.getOut().toString());
@@ -616,7 +623,7 @@ public class VoucherService {
     }
     
     
-    public Document createBusinessDocument(Map<String, BusinessDepartment> bookMap ,String date) {
+    public Document createBusinessDocument(Map<String, BusinessDepartment> bookMap ,String date) throws ParseException {
         Document document = DocumentHelper.createDocument();
         Element ufinterface = document.addElement("ufinterface")
                 .addAttribute("account", "002")
@@ -631,6 +638,10 @@ public class VoucherService {
                 .addAttribute("roottag", "")
                 .addAttribute("sender", "NC_OA");
                 
+        String preparedDate = date.substring(9, 17);
+        logger.debug("结束日期："+preparedDate);
+        preparedDate = DateFormatterUtil.getDateStrByFormatter(DateFormatterUtil.getDateByFormatter(preparedDate, "yyyyMMdd"), "yyyy-MM-dd");
+        logger.debug("制单日期："+preparedDate);
         
         
         for (Entry<String, BusinessDepartment> m :bookMap.entrySet())  {
@@ -647,8 +658,8 @@ public class VoucherService {
             //账簿号
             voucher_head.addElement("pk_accountingbook").setText(book.getBookNo());
             
-            voucher_head.addElement("period").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
-            voucher_head.addElement("prepareddate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+            voucher_head.addElement("period").setText(date);
+            voucher_head.addElement("prepareddate").setText(preparedDate);
             voucher_head.addElement("pk_prepared").setText("yy01");
             voucher_head.addElement("pk_org").setText("00");
             voucher_head.addElement("pk_org_v").setText("00");

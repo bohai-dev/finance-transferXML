@@ -51,5 +51,21 @@ public class DateFormatterUtil {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(formatter);
         return simpleDateFormat.format(date);
     }
+	
+	/**
+	 * 根据字符串获取日期
+	 * @param dateStr
+	 * @return
+	 * @throws ParseException
+	 */
+    public static Date getDateByFormatter(String dateStr, String formatter) throws ParseException{
+        
+        if(dateStr == null || dateStr.equals("")){
+            return null;
+        }
+        
+        SimpleDateFormat format = new SimpleDateFormat(formatter);
+        return format.parse(dateStr);
+    }
 
 }
