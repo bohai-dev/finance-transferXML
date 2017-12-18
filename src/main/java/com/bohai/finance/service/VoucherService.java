@@ -646,7 +646,14 @@ public class VoucherService {
         
         for (Entry<String, BusinessDepartment> m :bookMap.entrySet())  {
             
+            
             BusinessDepartment book = m.getValue();
+            
+            if(book.getBookNo().equals("00-0002")){
+                //总部不生成凭证
+                continue;
+            }
+            
             int i = 1;
             /**
              * 入金凭证开始
