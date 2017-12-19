@@ -17,7 +17,7 @@ public class Demo extends Application {
         Parent root = FXMLLoader.load(getClass()
                 .getResource("/com/bohai/finance/view/Demo.fxml"));
 
-        primaryStage.setTitle("Demo");
+        primaryStage.setTitle("凭证转换");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 		
