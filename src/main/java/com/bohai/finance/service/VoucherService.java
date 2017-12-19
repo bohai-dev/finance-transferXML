@@ -27,6 +27,7 @@ import org.dom4j.io.XMLWriter;
 import com.bohai.finance.model.Bank;
 import com.bohai.finance.model.BusinessDepartment;
 import com.bohai.finance.model.Headquarters;
+import com.bohai.finance.util.ApplicationConfig;
 import com.bohai.finance.util.DateFormatterUtil;
 
 /**
@@ -252,13 +253,13 @@ public class VoucherService {
     public Document createDocument(Map<String, Bank> bankMap, Map<String, BusinessDepartment> deptMap, String date) throws ParseException {
         Document document = DocumentHelper.createDocument();
         Element ufinterface = document.addElement("ufinterface")
-                .addAttribute("account", "002")
-                .addAttribute("billtype", "vouchergl")
-                .addAttribute("businessunitcode", "develop")
+                .addAttribute("account", ApplicationConfig.getProperty("account"))//"002"
+                .addAttribute("billtype", ApplicationConfig.getProperty("billtype"))//"vouchergl"
+                .addAttribute("businessunitcode", ApplicationConfig.getProperty("businessunitcode"))//"develop"
                 .addAttribute("filename", "")
-                .addAttribute("groupcode", "01")
+                .addAttribute("groupcode", ApplicationConfig.getProperty("groupcode"))//"01"
                 .addAttribute("isexchange", "Y")
-                .addAttribute("orgcode", "00")
+                .addAttribute("orgcode", ApplicationConfig.getProperty("orgcode"))//"00"
                 .addAttribute("receiver", "")
                 .addAttribute("replace", "Y")
                 .addAttribute("roottag", "")
@@ -626,13 +627,13 @@ public class VoucherService {
     public Document createBusinessDocument(Map<String, BusinessDepartment> bookMap ,String date) throws ParseException {
         Document document = DocumentHelper.createDocument();
         Element ufinterface = document.addElement("ufinterface")
-                .addAttribute("account", "002")
-                .addAttribute("billtype", "vouchergl")
-                .addAttribute("businessunitcode", "develop")
+                .addAttribute("account", ApplicationConfig.getProperty("account"))//"002"
+                .addAttribute("billtype", ApplicationConfig.getProperty("billtype"))//"vouchergl"
+                .addAttribute("businessunitcode", ApplicationConfig.getProperty("businessunitcode"))//"develop"
                 .addAttribute("filename", "")
-                .addAttribute("groupcode", "01")
+                .addAttribute("groupcode", ApplicationConfig.getProperty("groupcode"))//"01"
                 .addAttribute("isexchange", "Y")
-                .addAttribute("orgcode", "00")
+                .addAttribute("orgcode", ApplicationConfig.getProperty("orgcode"))//"00"
                 .addAttribute("receiver", "")
                 .addAttribute("replace", "Y")
                 .addAttribute("roottag", "")
@@ -668,8 +669,8 @@ public class VoucherService {
             voucher_head.addElement("period").setText(date);
             voucher_head.addElement("prepareddate").setText(preparedDate);
             voucher_head.addElement("pk_prepared").setText("yy01");
-            voucher_head.addElement("pk_org").setText("00");
-            voucher_head.addElement("pk_org_v").setText("00");
+            voucher_head.addElement("pk_org").setText(book.getBookNo().substring(0, 2));
+            voucher_head.addElement("pk_org_v").setText(book.getBookNo().substring(0, 2));
             voucher_head.addElement("pk_system").setText("GL");
             voucher_head.addElement("pk_vouchertype").setText("01");//凭证类别
             voucher_head.addElement("voucherkind").setText("0");

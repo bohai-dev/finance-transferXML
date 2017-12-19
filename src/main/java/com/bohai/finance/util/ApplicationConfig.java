@@ -35,6 +35,28 @@ public class ApplicationConfig {
 			
 			fis.close();
 			
+			//账号
+			if(getProperty("account") == null ){
+                setProperty("account", "002");
+            }
+			
+			if(getProperty("billtype") == null ){
+                setProperty("billtype", "vouchergl");
+            }
+			
+			if(getProperty("businessunitcode") == null ){
+                setProperty("businessunitcode", "develop");
+            }
+			
+			if(getProperty("orgcode") == null ){
+                setProperty("orgcode", "00");
+            }
+			
+			if(getProperty("groupcode") == null ){
+                setProperty("groupcode", "01");
+            }
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
