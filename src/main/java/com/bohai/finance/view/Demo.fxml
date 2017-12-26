@@ -54,6 +54,19 @@
                         </AnchorPane>
                      </content>
                   </Tab>
+                  <Tab closable="false" text="生成手续费凭证文件">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="587.0">
+                           <children>
+                              <Button id="fileButton" fx:id="chargeFileButton" layoutX="270.0" layoutY="102.0" mnemonicParsing="false" onAction="#chooseChargeFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
+                              <TextField id="textField" fx:id="chargeTextField" editable="false" layoutX="65.0" layoutY="102.0" prefHeight="23.0" prefWidth="204.0" />
+                              <Button id="transferButton" fx:id="chargeGenerateButton" layoutX="159.0" layoutY="153.0" mnemonicParsing="false" onAction="#generateChargeVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
+                              <DatePicker fx:id="chargeBeginDate" layoutX="65.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" />
+                              <DatePicker fx:id="chargeEndDate" layoutX="217.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
               </tabs>
             </TabPane>
             <TabPane prefHeight="98.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">

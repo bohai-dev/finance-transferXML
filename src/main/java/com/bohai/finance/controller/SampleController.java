@@ -89,6 +89,26 @@ public class SampleController implements Initializable{
     
     private File file;
     
+    /**
+     * 手续费凭证kongjian
+     */
+    @FXML
+    private DatePicker chargeBeginDate;
+    
+    @FXML
+    private DatePicker chargeEndDate;
+    
+    @FXML
+    private TextField chargeTextField;
+    
+    @FXML
+    private Button chargeFileButton;
+    
+    @FXML
+    private Button chargeGenerateButton;
+    
+    private File chargeFile;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // TODO Auto-generated method stub
@@ -161,6 +181,42 @@ public class SampleController implements Initializable{
             ApplicationConfig.setProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY, businessFile.getParent());
         }else {
             businessTextField.setText("");
+        }
+    }
+    
+    
+    /**
+     * 点击按钮选择手续费文件
+     * @param event
+     */
+    @FXML
+    public void chooseChargeFile(ActionEvent event) {
+        
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("请选择手续费文件");
+        //读取上次目录
+        String lastUploadDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY);
+        
+        if(lastUploadDirectory != null){
+            chooser.setInitialDirectory(new File(lastUploadDirectory));
+        }
+        
+        try {
+            
+            chargeFile = chooser.showOpenDialog(new Stage());
+        } catch (Exception e) {
+            //由于不同操作系统，文件路径格式不一致
+            logger.error("打开目录失败",e);
+            chooser.setInitialDirectory(null);
+            chargeFile = chooser.showOpenDialog(new Stage());
+        }
+        
+        if(chargeFile != null) {
+            chargeTextField.setText(chargeFile.getAbsolutePath());
+            //缓存本次上传目录
+            ApplicationConfig.setProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY, chargeFile.getParent());
+        }else {
+            chargeTextField.setText("");
         }
     }
     
@@ -296,6 +352,70 @@ public class SampleController implements Initializable{
                     logger.error("生成营业部凭证文件失败"+e);
                     textArea.appendText("生成营业部凭证文件失败："+e.getMessage()+"\n");
                     Alert warning = new Alert(Alert.AlertType.ERROR,"生成营业部凭证文件失败！");
+                    warning.showAndWait();
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * 生成手续费凭证
+     * @param event
+     */
+    @FXML
+    public void generateChargeVoucher(ActionEvent event){
+        
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        if(chargeBeginDate.getValue() == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择起始日期！");
+            warning.showAndWait();
+        }else if (chargeEndDate.getValue() == null) {
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择结束日期！");
+            warning.showAndWait();
+        }else if(chargeFile == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择文件！");
+            warning.showAndWait();
+        }else {
+            
+            String date = chargeBeginDate.getValue().format(dateTimeFormatter)+"-"+chargeEndDate.getValue().format(dateTimeFormatter);
+            //文件选择器
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("保存文件");
+            chooser.setInitialFileName("手续费凭证"+date+".xml");
+            
+            //获取上次保存目录
+            String lastOutDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_OUT_DIRECTORY);
+            if(lastOutDirectory != null){
+                chooser.setInitialDirectory(new File(lastOutDirectory));
+            }
+            
+            File file1 = null;
+            try {
+                file1 = chooser.showSaveDialog(new Stage());
+            } catch (Exception e1) {
+                logger.error("打开目录失败",e1);
+                chooser.setInitialDirectory(null);
+                file1 = chooser.showSaveDialog(new Stage());
+            }
+            
+            if(file1 != null) {
+                
+                //缓存本次生成目录
+                ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
+                VoucherService voucherService = new VoucherService();
+                try {
+                    
+                    
+                    voucherService.generateBusinessXML(businessFile, file1.getAbsolutePath(),date);
+                    
+                    Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");
+                    warning.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error("生成手续费凭证文件失败"+e);
+                    textArea.appendText("生成手续费凭证文件失败："+e.getMessage()+"\n");
+                    Alert warning = new Alert(Alert.AlertType.ERROR,"生成手续费凭证文件失败！");
                     warning.showAndWait();
                 }
             }
