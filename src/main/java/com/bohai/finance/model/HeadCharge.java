@@ -11,32 +11,64 @@ public class HeadCharge {
     /**
      * 账本编号
      */
-    private String bookNo;
+    private String bookNo = "00-0002";
     
     /**
-     * 大连上交手续费
+     * 手续费
      */
-    private BigDecimal dl;
-    
-    /**
-     * 上海上交手续费
-     */
-    private BigDecimal sh;
-    
-    /**
-     * 郑州上交手续费
-     */
-    private BigDecimal zz;
-    
-    /**
-     * 中金所上交手续费
-     */
-    private BigDecimal zj;
+    private BigDecimal charge = BigDecimal.ZERO;
     
     /**
      * 留存手续费
      */
-    private BigDecimal remain;
+    private BigDecimal remain = BigDecimal.ZERO;
+    
+    /**
+     * 大连上交手续费
+     */
+    private BigDecimal dl = BigDecimal.ZERO;
+    
+    /**
+     * 上海上交手续费
+     */
+    private BigDecimal sh = BigDecimal.ZERO;
+    
+    /**
+     * 郑州上交手续费
+     */
+    private BigDecimal zz = BigDecimal.ZERO;
+    
+    /**
+     * 中金所上交手续费
+     */
+    private BigDecimal zj = BigDecimal.ZERO;
+    
+    /**
+     * 累加手续费
+     * @param exchange 交易所代码
+     * @param charge 手续费
+     * @param remain 留存手续费
+     * @param handOn 上交手续费
+     */
+    public void addCharge(String exchange, BigDecimal charge, BigDecimal remain, BigDecimal handOn){
+        
+        this.charge = this.charge.add(charge);
+        this.remain = this.remain.add(remain);
+        if("CFFEX".equals(exchange)){
+            //中金所
+            this.zj = this.zj.add(handOn);
+        }else if ("CZCE".equals(exchange)) {
+            //郑州
+            this.zz = this.zz.add(handOn);
+        }else if ("DCE".equals(exchange)) {
+            //大连
+            this.dl = this.dl.add(handOn);
+        }else if ("SHFE".equals(exchange)) {
+            //上海
+            this.sh = this.sh.add(handOn);
+        }
+        
+    }
 
     public String getBookNo() {
         return bookNo;
@@ -86,4 +118,13 @@ public class HeadCharge {
         this.remain = remain;
     }
 
+    public BigDecimal getCharge() {
+        return charge;
+    }
+
+    public void setCharge(BigDecimal charge) {
+        this.charge = charge;
+    }
+
+    
 }

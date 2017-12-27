@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 
 import com.bohai.finance.model.Bank;
+import com.bohai.finance.service.ChargeVoucherService;
 import com.bohai.finance.service.VoucherService;
 import com.bohai.finance.util.ApplicationConfig;
 import com.bohai.finance.util.DateFormatterUtil;
@@ -403,11 +404,11 @@ public class SampleController implements Initializable{
                 
                 //缓存本次生成目录
                 ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
-                VoucherService voucherService = new VoucherService();
+                ChargeVoucherService chargeVoucherService = new ChargeVoucherService();
                 try {
                     
                     
-                    voucherService.generateBusinessXML(businessFile, file1.getAbsolutePath(),date);
+                    chargeVoucherService.generateVoucher(chargeFile, file1.getAbsolutePath(),date);
                     
                     Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");
                     warning.showAndWait();

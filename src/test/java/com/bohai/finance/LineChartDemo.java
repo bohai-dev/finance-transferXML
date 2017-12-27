@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.scene.chart.NumberAxis.DefaultFormatter;
+import javafx.scene.chart.XYChart;
 
 public class LineChartDemo extends Application {
     
@@ -52,10 +53,11 @@ public class LineChartDemo extends Application {
     public Parent createContent() {
 
         xAxis = new CategoryAxis();
-
+        
         final NumberAxis yAxis = new NumberAxis(0, 100, 10);
 
         chart = new LineChart<>(xAxis, yAxis);
+        
 
         // setup chart
 
@@ -80,7 +82,7 @@ public class LineChartDemo extends Application {
         yAxis.setLabel("Share Price");
 
         yAxis.setTickLabelFormatter(new DefaultFormatter(yAxis, "¥", null));
-
+        
         // add starting data
 
         hourDataSeries = new Series<>();
@@ -134,6 +136,8 @@ public class LineChartDemo extends Application {
             public void run() {
                 while (true) {
                     
+                    xAxis.setTickLabelsVisible(false);
+                    xAxis.setTickMarkVisible(false);
                     minuteDataSeries.getData().add(new Data<String, Number>(LocalTime.now().toString(), Math.random() * 10));
                     
                     try {
