@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import com.bohai.finance.model.Bank;
 import com.bohai.finance.service.ChargeVoucherService;
+import com.bohai.finance.service.ProfitVoucherService;
 import com.bohai.finance.service.VoucherService;
 import com.bohai.finance.util.ApplicationConfig;
 import com.bohai.finance.util.DateFormatterUtil;
@@ -109,6 +110,26 @@ public class SampleController implements Initializable{
     private Button chargeGenerateButton;
     
     private File chargeFile;
+    
+    /**
+     * 盈亏凭证控件
+     */
+    @FXML
+    private DatePicker profitBeginDate;
+    
+    @FXML
+    private DatePicker profitEndDate;
+    
+    @FXML
+    private TextField profitTextField;
+    
+    @FXML
+    private Button profitFileButton;
+    
+    @FXML
+    private Button profitGenerateButton;
+    
+    private File profitFile;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -218,6 +239,42 @@ public class SampleController implements Initializable{
             ApplicationConfig.setProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY, chargeFile.getParent());
         }else {
             chargeTextField.setText("");
+        }
+    }
+    
+    
+    /**
+     * 点击按钮选择盈亏文件
+     * @param event
+     */
+    @FXML
+    public void chooseProfitFile(ActionEvent event) {
+        
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("请选择手续费文件");
+        //读取上次目录
+        String lastUploadDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY);
+        
+        if(lastUploadDirectory != null){
+            chooser.setInitialDirectory(new File(lastUploadDirectory));
+        }
+        
+        try {
+            
+            profitFile = chooser.showOpenDialog(new Stage());
+        } catch (Exception e) {
+            //由于不同操作系统，文件路径格式不一致
+            logger.error("打开目录失败",e);
+            chooser.setInitialDirectory(null);
+            profitFile = chooser.showOpenDialog(new Stage());
+        }
+        
+        if(profitFile != null) {
+            profitTextField.setText(profitFile.getAbsolutePath());
+            //缓存本次上传目录
+            ApplicationConfig.setProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY, profitFile.getParent());
+        }else {
+            profitTextField.setText("");
         }
     }
     
@@ -417,6 +474,70 @@ public class SampleController implements Initializable{
                     logger.error("生成手续费凭证文件失败"+e);
                     textArea.appendText("生成手续费凭证文件失败："+e.getMessage()+"\n");
                     Alert warning = new Alert(Alert.AlertType.ERROR,"生成手续费凭证文件失败！");
+                    warning.showAndWait();
+                }
+            }
+        }
+    }
+    
+    
+    /**
+     * 生成手续费凭证
+     * @param event
+     */
+    @FXML
+    public void generateProfitVoucher(ActionEvent event){
+        
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        if(profitBeginDate.getValue() == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择起始日期！");
+            warning.showAndWait();
+        }else if (profitEndDate.getValue() == null) {
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择结束日期！");
+            warning.showAndWait();
+        }else if(profitFile == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择文件！");
+            warning.showAndWait();
+        }else {
+            
+            String date = profitBeginDate.getValue().format(dateTimeFormatter)+"-"+profitEndDate.getValue().format(dateTimeFormatter);
+            //文件选择器
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("保存文件");
+            chooser.setInitialFileName("盈亏凭证"+date+".xml");
+            
+            //获取上次保存目录
+            String lastOutDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_OUT_DIRECTORY);
+            if(lastOutDirectory != null){
+                chooser.setInitialDirectory(new File(lastOutDirectory));
+            }
+            
+            File file1 = null;
+            try {
+                file1 = chooser.showSaveDialog(new Stage());
+            } catch (Exception e1) {
+                logger.error("打开目录失败",e1);
+                chooser.setInitialDirectory(null);
+                file1 = chooser.showSaveDialog(new Stage());
+            }
+            
+            if(file1 != null) {
+                
+                //缓存本次生成目录
+                ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
+                ProfitVoucherService profitVoucherService = new ProfitVoucherService();
+                try {
+                    
+                    
+                    profitVoucherService.generateVoucher(profitFile, file1.getAbsolutePath(),date);
+                    
+                    Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");
+                    warning.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error("生成盈亏凭证文件失败"+e);
+                    textArea.appendText("生成盈亏凭证文件失败："+e.getMessage()+"\n");
+                    Alert warning = new Alert(Alert.AlertType.ERROR,"生成盈亏凭证文件失败！");
                     warning.showAndWait();
                 }
             }
