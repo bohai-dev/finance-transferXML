@@ -498,7 +498,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             }else {
               //盈亏小于0  应付货币保证金在借方    与总部往来在贷方
                 {
-                    //借方 与总部往来
+                    //借方 应付货币保证金
                     Element item = details.addElement("item");
                     item.addElement("detailindex").setText("1");
                     item.addElement("explanation").setText("交易所盈亏"+date);
