@@ -22,7 +22,7 @@
     <杭州营业部 deptName="36-杭州营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="40" bookNo="40-0002"/>
     <厦门营业部 deptName="37-厦门营业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="42" bookNo="42-0002"/>
     <华东事业部 deptName="39-华东事业部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="48" bookNo="48-0002"/>
-    <资产管理业务部 deptName="16-资产管理业务部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="51" bookNo="51-0002"/>
+    <资产管理业务部 deptName="16-资产管理业务部" subjectCode="2006" subjectName="应付货币保证金" assCode="0005" assValue="00" bookNo="00-0002"/>
     <华东事业二部 deptName="40-华东事业二部" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="48" bookNo="48-0002"/>
     <江苏分公司 deptName="41-江苏分公司" subjectCode="22410101" subjectName="自有资金" assCode="0005" assValue="32" bookNo="32-0002"/>
 </root>

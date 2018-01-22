@@ -288,11 +288,11 @@ public class Init {
         
         deptRoot.addElement("资产管理业务部")
         .addAttribute(DataConfig.DEPT_DEPT_NAME, "16-资产管理业务部")
-        .addAttribute(DataConfig.DEPT_SUBJECT_CODE, "2006")
-        .addAttribute(DataConfig.DEPT_SUBJECT_NAME, "应付货币保证金")
+        .addAttribute(DataConfig.DEPT_SUBJECT_CODE, "22410101")
+        .addAttribute(DataConfig.DEPT_SUBJECT_NAME, "自有资金")
         .addAttribute(DataConfig.DEPT_ASS_CODE, "0005")
-        .addAttribute(DataConfig.DEPT_ASS_VALUE, "00")
-        .addAttribute(DataConfig.DEPT_BOOK_NO, "00-0002");
+        .addAttribute(DataConfig.DEPT_ASS_VALUE, "51")
+        .addAttribute(DataConfig.DEPT_BOOK_NO, "51-0002");
         
         deptRoot.addElement("华东事业二部")
         .addAttribute(DataConfig.DEPT_DEPT_NAME, "40-华东事业二部")
