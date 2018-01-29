@@ -136,6 +136,7 @@ public class SampleController implements Initializable{
     /**
      * 其他盈亏
      */
+    @FXML
     private Button otherGenerateButton;
     
     /**
