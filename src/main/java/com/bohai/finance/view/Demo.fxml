@@ -81,6 +81,21 @@
                         </AnchorPane>
                      </content>
                   </Tab>
+                  <Tab closable="false" text="生成中金所申报费凭证文件">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="316.0" prefWidth="587.0">
+                           <children>
+                              <Button id="fileButton" fx:id="declareFileButton" layoutX="270.0" layoutY="131.0" mnemonicParsing="false" onAction="#chooseDeclareFile" prefHeight="23.0" prefWidth="83.0" text="选择文件" />
+                              <TextField id="textField" fx:id="declareTextField" editable="false" layoutX="65.0" layoutY="131.0" prefHeight="23.0" prefWidth="204.0" promptText="请选择分项资金文件" />
+                              <Button id="transferButton" fx:id="declareGenerateButton" layoutX="159.0" layoutY="168.0" mnemonicParsing="false" onAction="#generateDeclareVoucher" prefHeight="23.0" prefWidth="101.0" text="生成凭证文件" />
+                              <DatePicker fx:id="declareBeginDate" layoutX="65.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="起始日期" />
+                              <DatePicker fx:id="declareEndDate" layoutX="217.0" layoutY="43.0" prefHeight="23.0" prefWidth="137.0" promptText="结束日期" />
+                              <TextField id="textField" fx:id="investorTextField" editable="false" layoutX="65.0" layoutY="91.0" prefHeight="23.0" prefWidth="204.0" promptText="请选择投资者文件" />
+                              <Button id="fileButton" fx:id="investorFileButton" layoutX="270.0" layoutY="91.0" mnemonicParsing="false" onAction="#chooseInvestorFile" prefHeight="23.0" prefWidth="128.0" text="选择投资者部门文件" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
               </tabs>
             </TabPane>
             <TabPane prefHeight="98.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">

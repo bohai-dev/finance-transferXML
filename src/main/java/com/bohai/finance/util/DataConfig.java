@@ -12,8 +12,9 @@ public class DataConfig {
     
     public static String BANK_ACCOUNT_NO = "accountNo";
     
-    
     public static String DEPT_DATA_URL = "data/dept.xml";
+    
+    public static String INVESTOR_DATA_URL = "data/investor.xml";
     
     /**
      * 营业部名称
@@ -44,4 +45,10 @@ public class DataConfig {
      * 账簿编号
      */
     public static String DEPT_BOOK_NO = "bookNo";
+    
+    /**
+     * 投资者所属营业部
+     */
+    public static String INVESTOR_DEP_NAME = "investorDepName";
+    
 }

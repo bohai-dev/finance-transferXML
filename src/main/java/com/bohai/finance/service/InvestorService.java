@@ -8,12 +8,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+
+import com.bohai.finance.util.DataConfig;
 
 /**
  * 投资者信息接口
@@ -21,14 +25,18 @@ import org.dom4j.io.XMLWriter;
  *
  */
 public class InvestorService {
+    
+    static Logger logger = Logger.getLogger(InvestorService.class);
+    
+    static final String PREFIX = "I";
 
     /**
      * 保存客户信息
      * @param file
      * @throws DocumentException 
-     * @throws FileNotFoundException 
+     * @throws IOException 
      */
-    public void saveInvestors(File infile) throws FileNotFoundException, DocumentException{
+    public void saveInvestors(File infile) throws DocumentException, IOException{
         
         Document document = this.parse(infile);
         
@@ -40,11 +48,18 @@ public class InvestorService {
         
         List<Element> rows = table.elements("Row");
         
+        
+        Document investorDocument = DocumentHelper.createDocument();
+        Element investorRoot = investorDocument.addElement("root");
+        
         for(int i =1 ; i < rows.size() ; i++){
             
             Element row = rows.get(i);
             
             List<Element> cells = row.elements("Cell");
+            if(cells == null || cells.get(0).element("Data") == null || cells.get(0).element("Data").getTextTrim() == null){
+                break;
+            }
             
             //投资者代码
             String investorNo = cells.get(0).element("Data").getTextTrim();
@@ -52,8 +67,30 @@ public class InvestorService {
             //营业部名称
             String depName = cells.get(1).element("Data").getTextTrim();
             
+            investorRoot.addElement(PREFIX+investorNo)
+            .addAttribute(DataConfig.INVESTOR_DEP_NAME, depName);
+            
         }
+        this.write(investorDocument, DataConfig.INVESTOR_DATA_URL);
         
+    }
+    
+    public String getDepNameByInvestorNo(String investorNo) throws Exception{
+        
+        String depName = "";
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(DataConfig.INVESTOR_DATA_URL);
+        Element root = document.getRootElement();
+        Element e = root.element(PREFIX+investorNo);
+        if(e == null){
+            throw new Exception("查询客户所属营业部失败，无此客户信息："+investorNo);
+        }
+        depName = e.attributeValue(DataConfig.INVESTOR_DEP_NAME);
+        if(depName == null || depName.equals("")){
+            throw new Exception("查询客户所属营业部失败，无此客户信息："+investorNo);
+        }
+        logger.debug("投资者："+investorNo+"所在营业部："+depName);
+        return depName;
     }
     
     /**

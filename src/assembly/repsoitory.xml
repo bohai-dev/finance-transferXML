@@ -19,6 +19,10 @@
       <outputDirectory>./jre</outputDirectory>
     </fileSet>
     <fileSet>
+      <directory>${project.basedir}/jre32</directory>
+      <outputDirectory>./jre32</outputDirectory>
+    </fileSet>
+    <fileSet>
       <directory>${project.basedir}/conf</directory>
       <outputDirectory>./conf</outputDirectory>
     </fileSet>

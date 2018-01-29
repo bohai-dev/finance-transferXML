@@ -296,8 +296,8 @@ public class Init {
             .addAttribute(DataConfig.DEPT_SUBJECT_CODE, "22410101")
             .addAttribute(DataConfig.DEPT_SUBJECT_NAME, "自有资金")
             .addAttribute(DataConfig.DEPT_ASS_CODE, "0005")
-            .addAttribute(DataConfig.DEPT_ASS_VALUE, "51")
-            .addAttribute(DataConfig.DEPT_BOOK_NO, "51-0002");
+            .addAttribute(DataConfig.DEPT_ASS_VALUE, "11")
+            .addAttribute(DataConfig.DEPT_BOOK_NO, "11-0002");
             
             deptRoot.addElement("华东事业二部")
             .addAttribute(DataConfig.DEPT_DEPT_NAME, "40-华东事业二部")
