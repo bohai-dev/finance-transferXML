@@ -116,13 +116,14 @@ public class CFFEXDeclareService {
             }else {
                 if("00-0002".equals(businessDepartment.getBookNo())){
                     //总部账簿
-                    headDep.add(new BigDecimal(money));
+                	headDep = headDep.add(new BigDecimal(money));
                 }else {
                     BigDecimal depBook = bookMap.get(businessDepartment.getBookNo());
                     if(depBook == null){
                         bookMap.put(businessDepartment.getBookNo(), new BigDecimal(money));
                     }else {
-                        depBook.add(new BigDecimal(money));
+                    	depBook = depBook.add(new BigDecimal(money));
+                    	bookMap.put(businessDepartment.getBookNo(), depBook);
                     }
                 }
             }
@@ -179,7 +180,8 @@ public class CFFEXDeclareService {
             Element details = voucher_head.addElement("details");
             //总部部门
             int i =1;
-            {
+            
+            if(headDep.compareTo(BigDecimal.ZERO) != 0){
                 //应付货币保证金（2006）
                 Element item = details.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
@@ -208,8 +210,11 @@ public class CFFEXDeclareService {
                 
                 String bookNo = m.getKey();
                 BigDecimal depMoney = m.getValue();
+                if(depMoney.compareTo(BigDecimal.ZERO) == 0) {
+                	continue;
+                }
                 
-                total.add(depMoney);
+                total = total.add(depMoney);
                 
                 Element item = details.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
@@ -264,6 +269,11 @@ public class CFFEXDeclareService {
             for (Entry<String, BigDecimal> m :bookMap.entrySet())  {
                 String bookNo = m.getKey();
                 BigDecimal depMoney = m.getValue();
+                
+                if(depMoney.compareTo(BigDecimal.ZERO) == 0) {
+                	continue;
+                }
+                
                 Element voucher = ufinterface.addElement("voucher");
                 
                 Element voucher_head = voucher.addElement("voucher_head");
