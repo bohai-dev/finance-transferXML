@@ -610,8 +610,8 @@ public class VoucherService {
                         businessDepartment.setOut(new BigDecimal(out));
                         bookMap.put(businessDepartment.getBookNo(), businessDepartment);
                     }else {
-                        book.setIn(businessDepartment.getIn().add(new BigDecimal(in)));
-                        book.setOut(businessDepartment.getOut().add(new BigDecimal(out)));
+                        book.setIn(book.getIn().add(new BigDecimal(in)));
+                        book.setOut(book.getOut().add(new BigDecimal(out)));
                     }
                     
                 }
