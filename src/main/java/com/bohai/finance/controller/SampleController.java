@@ -19,6 +19,7 @@ import com.bohai.finance.service.ChargeLossService;
 import com.bohai.finance.service.ChargeVoucherService;
 import com.bohai.finance.service.InvestorService;
 import com.bohai.finance.service.ProfitVoucherService;
+import com.bohai.finance.service.RoyaltyService;
 import com.bohai.finance.service.VoucherService;
 import com.bohai.finance.util.ApplicationConfig;
 
@@ -166,6 +167,26 @@ public class SampleController implements Initializable{
     private File declareFile;
     
     private File investorFile;
+    
+    /**
+     * 盈亏凭证控件
+     */
+    @FXML
+    private DatePicker royaltyBeginDate;
+    
+    @FXML
+    private DatePicker royaltyEndDate;
+    
+    @FXML
+    private TextField royaltyTextField;
+    
+    @FXML
+    private Button royaltyFileButton;
+    
+    @FXML
+    private Button royaltyGenerateButton;
+    
+    private File royaltyFile;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -384,7 +405,40 @@ public class SampleController implements Initializable{
         }
     }
     
-    
+    /**
+     * 点击按钮选择权利金收支文件
+     * @param event
+     */
+    @FXML
+    public void chooseRoyaltyFile(ActionEvent event) {
+        
+        FileChooser chooser = new FileChooser();
+        chooser.setTitle("请选择手续费文件");
+        //读取上次目录
+        String lastUploadDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY);
+        
+        if(lastUploadDirectory != null){
+            chooser.setInitialDirectory(new File(lastUploadDirectory));
+        }
+        
+        try {
+            
+            royaltyFile = chooser.showOpenDialog(new Stage());
+        } catch (Exception e) {
+            //由于不同操作系统，文件路径格式不一致
+            logger.error("打开目录失败",e);
+            chooser.setInitialDirectory(null);
+            royaltyFile = chooser.showOpenDialog(new Stage());
+        }
+        
+        if(royaltyFile != null) {
+            royaltyTextField.setText(royaltyFile.getAbsolutePath());
+            //缓存本次上传目录
+            ApplicationConfig.setProperty(ApplicationConfig.LAST_UPLOAD_DIRECTORY, royaltyFile.getParent());
+        }else {
+            royaltyTextField.setText("");
+        }
+    }
     
     /**
      * 生成凭证
@@ -789,7 +843,67 @@ public class SampleController implements Initializable{
         }
     }
     
-    
+    /**
+     * 生成其他凭证
+     * @param event
+     */
+    @FXML
+    public void generateRoyaltyVoucher(ActionEvent event){
+        
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        if(royaltyBeginDate.getValue() == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择起始日期！");
+            warning.showAndWait();
+        }else if (royaltyEndDate.getValue() == null) {
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择结束日期！");
+            warning.showAndWait();
+        }else if(royaltyFile == null){
+            Alert warning = new Alert(Alert.AlertType.WARNING,"请先选择文件！");
+            warning.showAndWait();
+        }else {
+            
+            String date = royaltyBeginDate.getValue().format(dateTimeFormatter)+"-"+royaltyEndDate.getValue().format(dateTimeFormatter);
+            //文件选择器
+            FileChooser chooser = new FileChooser();
+            chooser.setTitle("保存文件");
+            chooser.setInitialFileName("权利金收支凭证"+date+".xml");
+            
+            //获取上次保存目录
+            String lastOutDirectory = ApplicationConfig.getProperty(ApplicationConfig.LAST_OUT_DIRECTORY);
+            if(lastOutDirectory != null){
+                chooser.setInitialDirectory(new File(lastOutDirectory));
+            }
+            
+            File file1 = null;
+            try {
+                file1 = chooser.showSaveDialog(new Stage());
+            } catch (Exception e1) {
+                logger.error("打开目录失败",e1);
+                chooser.setInitialDirectory(null);
+                file1 = chooser.showSaveDialog(new Stage());
+            }
+            
+            if(file1 != null) {
+                
+                //缓存本次生成目录
+                ApplicationConfig.setProperty(ApplicationConfig.LAST_OUT_DIRECTORY, file1.getParent());
+                RoyaltyService service = new RoyaltyService();
+                try {
+                    
+                    service.generateVoucher(royaltyFile, file1.getAbsolutePath(),date);
+                    
+                    Alert warning = new Alert(Alert.AlertType.INFORMATION,"生成成功！");
+                    warning.showAndWait();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    logger.error("生成权利金收支凭证文件失败"+e);
+                    textArea.appendText("生成权利金收支凭证文件失败："+e.getMessage()+"\n");
+                    Alert warning = new Alert(Alert.AlertType.ERROR,"生成权利金收支凭证文件失败！");
+                    warning.showAndWait();
+                }
+            }
+        }
+    }
     
     
     @FXML
