@@ -389,6 +389,11 @@ public class RoyaltyService {
                 if(bookNo.equals("00-0002")) {
                     continue;
                 }
+                
+                if(dep.getIn().compareTo(BigDecimal.ZERO) == 0 && dep.getOut().compareTo(BigDecimal.ZERO) == 0){
+                    continue;
+                }
+                
                 Element voucher = ufinterface.addElement("voucher");
                 
                 Element voucher_head = voucher.addElement("voucher_head");
