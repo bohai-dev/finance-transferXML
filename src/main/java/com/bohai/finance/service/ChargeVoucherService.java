@@ -347,6 +347,30 @@ public class ChargeVoucherService {
                 item.addElement("pk_accasoa").setText("11240404");//
             }
             
+            if(headCharge.getNy().compareTo(BigDecimal.ZERO) > 0){
+                
+                //贷方上交手续费能源交易所
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText("7");
+                item.addElement("explanation").setText("上交手续费"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText("0");
+                item.addElement("localdebitamount").setText("0");
+                item.addElement("accsubjcode").setText("11240504");//科目  交易手续费
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText(headCharge.getNy().setScale(2, RoundingMode.HALF_UP).toString());//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText(headCharge.getNy().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240504");//
+            }
+            
         }
         
         

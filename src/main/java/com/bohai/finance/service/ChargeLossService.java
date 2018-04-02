@@ -203,9 +203,11 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
 		voucher_head.addElement("attachment").setText("0");
 		voucher_head.addElement("signflag").setText("N");
 		Element details = voucher_head.addElement("details");
+		
+		int iCount = 1;
 		//大商所（上交手续费）
 		Element item = details.addElement("item");
-		item.addElement("detailindex").setText("1");
+		item.addElement("detailindex").setText(String.valueOf(iCount++));
 		item.addElement("explanation").setText("其它客户盈亏手续费" + date);
 		item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
 		// 借方金额
@@ -232,7 +234,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
 		
 		//郑州商所（上交手续费）
 		Element item1 = details.addElement("item");
-		item1.addElement("detailindex").setText("2");
+		item1.addElement("detailindex").setText(String.valueOf(iCount++));
 		item1.addElement("explanation").setText("其它客户盈亏手续费" + date);
 		item1.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
 		// 借方金额
@@ -259,7 +261,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
 		
 		//中金所（上交手续费）
 		Element item2 = details.addElement("item");
-		item2.addElement("detailindex").setText("3");
+		item2.addElement("detailindex").setText(String.valueOf(iCount++));
 		item2.addElement("explanation").setText("其它客户盈亏手续费" + date);
 		item2.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
 		// 借方金额
@@ -286,7 +288,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
 		
 		//上交所（上交手续费）
 		Element item3 = details.addElement("item");
-		item3.addElement("detailindex").setText("4");
+		item3.addElement("detailindex").setText(String.valueOf(iCount++));
 		item3.addElement("explanation").setText("其它客户盈亏手续费" + date);
 		item3.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
 		// 借方金额
@@ -310,8 +312,36 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
 		item3.addElement("localcreditamount").setText("0");
 		item3.addElement("pk_currtype").setText("CNY");
 		item3.addElement("pk_accasoa").setText("11240204");
+		
+		if(handCharge.getHandNy().compareTo(BigDecimal.ZERO) > 0 ){
+		  //能源交易所（上交手续费）
+	        Element item4 = details.addElement("item");
+	        item4.addElement("detailindex").setText(String.valueOf(iCount++));
+	        item4.addElement("explanation").setText("其它客户盈亏手续费" + date);
+	        item4.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+	        // 借方金额
+	        item4.addElement("debitamount").setText(
+	                handCharge.getHandNy().setScale(2, RoundingMode.HALF_UP).multiply(new BigDecimal(-1)).toString()); 
+	        // 借方金额
+	        item4.addElement("localdebitamount").setText(
+	                handCharge.getHandNy().setScale(2, RoundingMode.HALF_UP).multiply(new BigDecimal(-1)).toString());
+	        item4.addElement("accsubjcode").setText("11240504");// 科目
+	        item4.addElement("price").setText("0");// 单价
+	        item4.addElement("excrate2").setText("1");
+	        item4.addElement("debitquantity").setText("0");
+	        item4.addElement("groupdebitamount").setText("0");
+	        item4.addElement("globaldebitamount").setText("0");
+	        item4.addElement("creditquantity").setText("0");
+	        // 贷方金额
+	        item4.addElement("creditamount").setText("0");
+	        item4.addElement("groupcreditamount").setText("0");
+	        item4.addElement("globalcreditamount").setText("0");
+	        // 贷方金额
+	        item4.addElement("localcreditamount").setText("0");
+	        item4.addElement("pk_currtype").setText("CNY");
+	        item4.addElement("pk_accasoa").setText("11240504");
+		}
 
-		int iCount = 5;
         //营业部盈亏手续费凭证
         for (Entry<String, MarketDepProfit> m :bookMap.entrySet())  {
         	
@@ -348,7 +378,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
                 ass.addElement("pk_Checktype").setText("0005"); //辅助核算项编码   内部客商
                 ass.addElement("pk_Checkvalue").setText(m.getValue().getBookNo().substring(0, 2));  //和总部挂往来
         		
-            } else {
+            } else if(profit.getTotalProfit().compareTo(BigDecimal.ZERO) < 0){
             	
         		Element itemMx = details.addElement("item");
         		itemMx.addElement("detailindex").setText(String.valueOf(iCount++));
@@ -407,7 +437,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
     		itemSh.addElement("localcreditamount").setText("0");
     		itemSh.addElement("pk_currtype").setText("CNY");
     		itemSh.addElement("pk_accasoa").setText("11240202");
-        } else {
+        } else if(exchangeProfit.getSh().compareTo(BigDecimal.ZERO) < 0){
         	
     		Element itemSh = details.addElement("item");
     		itemSh.addElement("detailindex").setText(String.valueOf(iCount++));
@@ -462,7 +492,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
     		itemZz.addElement("localcreditamount").setText("0");
     		itemZz.addElement("pk_currtype").setText("CNY");
     		itemZz.addElement("pk_accasoa").setText("11240302");
-        } else {
+        } else if(exchangeProfit.getZz().compareTo(BigDecimal.ZERO) < 0){
         	
     		Element itemZz = details.addElement("item");
     		itemZz.addElement("detailindex").setText(String.valueOf(iCount++));
@@ -517,7 +547,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
     		itemDl.addElement("localcreditamount").setText("0");
     		itemDl.addElement("pk_currtype").setText("CNY");
     		itemDl.addElement("pk_accasoa").setText("11240102");
-        } else {
+        } else if(exchangeProfit.getDl().compareTo(BigDecimal.ZERO) < 0){
         	
     		Element itemDl = details.addElement("item");
     		itemDl.addElement("detailindex").setText(String.valueOf(iCount++));
@@ -572,7 +602,7 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
     		itemZj.addElement("localcreditamount").setText("0");
     		itemZj.addElement("pk_currtype").setText("CNY");
     		itemZj.addElement("pk_accasoa").setText("11240402");
-        } else {
+        } else if(exchangeProfit.getZj().compareTo(BigDecimal.ZERO) < 0){
         	
     		Element itemZj = details.addElement("item");
     		itemZj.addElement("detailindex").setText(String.valueOf(iCount++));
@@ -597,6 +627,61 @@ public void chargeLoss(File infile, String targetPath, String date) throws Excep
     		itemZj.addElement("localcreditamount").setText(exchangeProfit.getZj().setScale(2, RoundingMode.HALF_UP).abs().toString());
     		itemZj.addElement("pk_currtype").setText("CNY");
     		itemZj.addElement("pk_accasoa").setText("11240402");
+        }
+        
+      //能源交易所（盈亏）
+        if (exchangeProfit.getNy().compareTo(BigDecimal.ZERO) > 0) {
+            
+            Element itemNy = details.addElement("item");
+            itemNy.addElement("detailindex").setText(String.valueOf(iCount++));
+            itemNy.addElement("explanation").setText("其它客户盈亏手续费" + date);
+            itemNy.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+            // 借方金额
+            itemNy.addElement("debitamount").setText(
+                    exchangeProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString()); 
+            // 借方金额
+            itemNy.addElement("localdebitamount").setText(
+                    exchangeProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString());
+            itemNy.addElement("accsubjcode").setText("11240502");// 科目
+            itemNy.addElement("price").setText("0");// 单价
+            itemNy.addElement("excrate2").setText("1");
+            itemNy.addElement("debitquantity").setText("0");
+            itemNy.addElement("groupdebitamount").setText("0");
+            itemNy.addElement("globaldebitamount").setText("0");
+            itemNy.addElement("creditquantity").setText("0");
+            // 贷方金额
+            itemNy.addElement("creditamount").setText("0");
+            itemNy.addElement("groupcreditamount").setText("0");
+            itemNy.addElement("globalcreditamount").setText("0");
+            // 贷方金额
+            itemNy.addElement("localcreditamount").setText("0");
+            itemNy.addElement("pk_currtype").setText("CNY");
+            itemNy.addElement("pk_accasoa").setText("11240502");
+        } else if(exchangeProfit.getNy().compareTo(BigDecimal.ZERO) < 0){
+            
+            Element itemNy = details.addElement("item");
+            itemNy.addElement("detailindex").setText(String.valueOf(iCount++));
+            itemNy.addElement("explanation").setText("其它客户盈亏手续费" + date);
+            itemNy.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+            // 借方金额
+            itemNy.addElement("debitamount").setText("0"); 
+            // 借方金额
+            itemNy.addElement("localdebitamount").setText("0");
+            itemNy.addElement("accsubjcode").setText("11240502");// 科目
+            itemNy.addElement("price").setText("0");// 单价
+            itemNy.addElement("excrate2").setText("1");
+            itemNy.addElement("debitquantity").setText("0");
+            itemNy.addElement("groupdebitamount").setText("0");
+            itemNy.addElement("globaldebitamount").setText("0");
+            itemNy.addElement("creditquantity").setText("0");
+            // 贷方金额
+            itemNy.addElement("creditamount").setText(exchangeProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString());
+            itemNy.addElement("groupcreditamount").setText("0");
+            itemNy.addElement("globalcreditamount").setText("0");
+            // 贷方金额
+            itemNy.addElement("localcreditamount").setText(exchangeProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString());
+            itemNy.addElement("pk_currtype").setText("CNY");
+            itemNy.addElement("pk_accasoa").setText("11240502");
         }
         
         return document;

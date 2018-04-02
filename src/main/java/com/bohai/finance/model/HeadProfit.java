@@ -39,6 +39,8 @@ public class HeadProfit {
      */
     private BigDecimal zj = BigDecimal.ZERO;
     
+    private BigDecimal ny = BigDecimal.ZERO;
+    
     public void addProfit(String exchange, BigDecimal profit){
         this.totalProfit = this.totalProfit.add(profit);
         if("CFFEX".equals(exchange)){
@@ -53,6 +55,8 @@ public class HeadProfit {
         }else if ("SHFE".equals(exchange)) {
             //上海
             this.sh = this.sh.add(profit);
+        }else if ("INE".equals(exchange)) {
+            this.ny = this.ny.add(profit);
         }
     }
 
@@ -102,6 +106,14 @@ public class HeadProfit {
 
     public void setZj(BigDecimal zj) {
         this.zj = zj;
+    }
+
+    public BigDecimal getNy() {
+        return ny;
+    }
+
+    public void setNy(BigDecimal ny) {
+        this.ny = ny;
     }
     
 }

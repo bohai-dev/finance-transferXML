@@ -44,6 +44,11 @@ public class HeadCharge {
     private BigDecimal zj = BigDecimal.ZERO;
     
     /**
+     * 能源交易所
+     */
+    private BigDecimal ny = BigDecimal.ZERO;
+    
+    /**
      * 累加手续费
      * @param exchange 交易所代码
      * @param charge 手续费
@@ -66,6 +71,8 @@ public class HeadCharge {
         }else if ("SHFE".equals(exchange)) {
             //上海
             this.sh = this.sh.add(handOn);
+        }else if ("INE".equals(exchange)) {
+            this.ny = this.ny.add(handOn);
         }
         
     }
@@ -124,6 +131,14 @@ public class HeadCharge {
 
     public void setCharge(BigDecimal charge) {
         this.charge = charge;
+    }
+
+    public BigDecimal getNy() {
+        return ny;
+    }
+
+    public void setNy(BigDecimal ny) {
+        this.ny = ny;
     }
 
     

@@ -30,6 +30,11 @@ public class HandCharge {
      */
     private BigDecimal handZj = BigDecimal.ZERO;
     
+    /**
+     * 能源盈亏
+     */
+    private BigDecimal handNy = BigDecimal.ZERO;
+    
     public void addCharge(String exchange, BigDecimal charge){
         if("CFFEX".equals(exchange)){
             //中金所
@@ -43,6 +48,9 @@ public class HandCharge {
         } else if ("SHFE".equals(exchange)) {
             //上海
             this.handSh = this.handSh.add(charge);
+        }else if ("INE".equals(exchange)) {
+            //能源
+            this.handNy = this.handNy.add(charge);
         }
     }
 
@@ -77,6 +85,16 @@ public class HandCharge {
 
     public void setHandzj(BigDecimal handZj) {
         this.handZj = handZj;
+    }
+
+
+    public BigDecimal getHandNy() {
+        return handNy;
+    }
+
+
+    public void setHandNy(BigDecimal handNy) {
+        this.handNy = handNy;
     }
     
 }

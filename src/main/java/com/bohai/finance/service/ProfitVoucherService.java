@@ -197,11 +197,11 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             voucher_head.addElement("signflag").setText("N");
             Element details = voucher_head.addElement("details");
             
-            
+            int index = 1;
             if(headProfit.getDl().compareTo(BigDecimal.ZERO) > 0){
                 //大连盈亏大于0 放在借方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("1");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(headProfit.getDl().setScale(2, RoundingMode.HALF_UP).abs().toString());
@@ -222,7 +222,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             }else {
                 //大连盈亏小于0 放在贷方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("1");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
@@ -245,7 +245,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             if(headProfit.getSh().compareTo(BigDecimal.ZERO) > 0){
                 //上期所盈亏大于0 放在借方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("2");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(headProfit.getSh().setScale(2, RoundingMode.HALF_UP).abs().toString());
@@ -266,7 +266,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             }else {
                 //上期所盈亏小于0 放在贷方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("2");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
@@ -289,7 +289,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             if(headProfit.getZz().compareTo(BigDecimal.ZERO) > 0){
                 //郑商所盈亏大于0 放在借方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("3");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(headProfit.getZz().setScale(2, RoundingMode.HALF_UP).abs().toString());
@@ -310,7 +310,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             }else {
                 //郑商所盈亏小于0 放在贷方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("3");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
@@ -333,7 +333,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             if(headProfit.getZj().compareTo(BigDecimal.ZERO) > 0){
                 //中金所盈亏大于0 放在借方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("4");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(headProfit.getZj().setScale(2, RoundingMode.HALF_UP).abs().toString());
@@ -354,7 +354,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             }else {
                 //中金所盈亏小于0 放在贷方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("4");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
@@ -374,10 +374,54 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                 item.addElement("pk_accasoa").setText("11240402");//
             }
             
+            if(headProfit.getNy().compareTo(BigDecimal.ZERO) > 0){
+                //能源交易所盈亏大于0 放在借方
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+index++);
+                item.addElement("explanation").setText("交易所盈亏"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText(headProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString());
+                item.addElement("localdebitamount").setText(headProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString());
+                item.addElement("accsubjcode").setText("11240502");//科目  
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText("0");//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText("0");
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240502");//
+            }else if(headProfit.getNy().compareTo(BigDecimal.ZERO) < 0){
+                //能源交易所盈亏小于0 放在贷方
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+index++);
+                item.addElement("explanation").setText("交易所盈亏"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText("0");
+                item.addElement("localdebitamount").setText("0");
+                item.addElement("accsubjcode").setText("11240502");//科目 
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText(headProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString());//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText(headProfit.getNy().setScale(2, RoundingMode.HALF_UP).abs().toString());
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240502");//
+            }
+            
             if(headProfit.getTotalProfit().compareTo(BigDecimal.ZERO) < 0){
                 //总盈亏小于0 放在借方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("5");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(headProfit.getTotalProfit().setScale(2, RoundingMode.HALF_UP).abs().toString());
@@ -398,7 +442,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
             }else {
                 //总盈亏大于0 放在贷方
                 Element item = details.addElement("item");
-                item.addElement("detailindex").setText("5");
+                item.addElement("detailindex").setText(""+index++);
                 item.addElement("explanation").setText("交易所盈亏"+date);
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
@@ -495,7 +539,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                     ass.addElement("pk_Checktype").setText("0005"); //辅助核算项编码   内部客商
                     ass.addElement("pk_Checkvalue").setText("00");  //和总部挂往来
                 }
-            }else {
+            }else if(profit.getTotalProfit().compareTo(BigDecimal.ZERO) < 0){
               //盈亏小于0  应付货币保证金在借方    与总部往来在贷方
                 {
                     //借方 应付货币保证金

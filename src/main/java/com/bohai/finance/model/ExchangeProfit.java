@@ -29,6 +29,11 @@ public class ExchangeProfit {
      */
     private BigDecimal zj = BigDecimal.ZERO;
     
+    /**
+     * 能源交易所
+     */
+    private BigDecimal ny = BigDecimal.ZERO;
+    
     public void addProfit(String exchange, BigDecimal profit){
 
         if("CFFEX".equals(exchange)){
@@ -43,6 +48,8 @@ public class ExchangeProfit {
         } else if ("SHFE".equals(exchange)) {
             //上海
             this.sh = this.sh.add(profit);
+        } else if ("INE".equals(exchange)) {
+            this.ny = this.ny.add(profit);
         }
     }
 
@@ -76,6 +83,14 @@ public class ExchangeProfit {
 
     public void setZj(BigDecimal zj) {
         this.zj = zj;
+    }
+
+    public BigDecimal getNy() {
+        return ny;
+    }
+
+    public void setNy(BigDecimal ny) {
+        this.ny = ny;
     }
     
 }
