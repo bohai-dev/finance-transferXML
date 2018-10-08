@@ -191,6 +191,50 @@ public class RoyaltyService {
             Element details = voucher_head.addElement("details");
             //总部部门
             int i =1;
+            if(royaltyHead.getShIn().compareTo(BigDecimal.ZERO) != 0){
+                //上期所权利金总收入
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("权利金收支"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText(royaltyHead.getShIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("localdebitamount").setText(royaltyHead.getShIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("accsubjcode").setText("11240201");//科目  上期所追加 
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText("0");//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText("0");
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240201");//
+            }
+            if(royaltyHead.getShOut().compareTo(BigDecimal.ZERO) != 0){
+                //上期所权利金总收入
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("权利金收支"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText("0");
+                item.addElement("localdebitamount").setText("0");
+                item.addElement("accsubjcode").setText("11240203");//科目  上期所清退
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText(royaltyHead.getShOut().abs().setScale(2, RoundingMode.HALF_UP).toString());//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText(royaltyHead.getShOut().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240203");//
+            }
             if(royaltyHead.getDlIn().compareTo(BigDecimal.ZERO) != 0){
                 //大连权利金总收入
                 Element item = details.addElement("item");
