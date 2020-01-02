@@ -235,6 +235,54 @@ public class RoyaltyService {
                 item.addElement("pk_currtype").setText("CNY");
                 item.addElement("pk_accasoa").setText("11240203");//
             }
+            //2020-01-02 新增股票期权  
+            //中金所
+            if(royaltyHead.getZjIn().compareTo(BigDecimal.ZERO) != 0){
+                //上期所权利金总收入
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("权利金收支"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText(royaltyHead.getZjIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("localdebitamount").setText(royaltyHead.getZjIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("accsubjcode").setText("11240401");//科目  中金所追加 
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText("0");//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText("0");
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240401");//
+            }
+            if(royaltyHead.getZjOut().compareTo(BigDecimal.ZERO) != 0){
+                //上期所权利金总支出
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("权利金收支"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText("0");
+                item.addElement("localdebitamount").setText("0");
+                item.addElement("accsubjcode").setText("11240403");//科目  中金所清退
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText(royaltyHead.getZjOut().abs().setScale(2, RoundingMode.HALF_UP).toString());//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText(royaltyHead.getZjOut().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240403");//
+            }
+            //2020-01-02 新增股票期权
+            
             if(royaltyHead.getDlIn().compareTo(BigDecimal.ZERO) != 0){
                 //大连权利金总收入
                 Element item = details.addElement("item");
@@ -302,7 +350,7 @@ public class RoyaltyService {
                 item.addElement("pk_accasoa").setText("11240301");//
             }
             if(royaltyHead.getZzOut().compareTo(BigDecimal.ZERO) != 0){
-                //大连权利金总收入
+                //郑州权利金总收入
                 Element item = details.addElement("item");
                 item.addElement("detailindex").setText(""+i++);
                 item.addElement("explanation").setText("权利金收支"+date);
