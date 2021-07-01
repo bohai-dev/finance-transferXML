@@ -426,7 +426,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(headProfit.getTotalProfit().setScale(2, RoundingMode.HALF_UP).abs().toString());
                 item.addElement("localdebitamount").setText(headProfit.getTotalProfit().setScale(2, RoundingMode.HALF_UP).abs().toString());
-                item.addElement("accsubjcode").setText("2006");//科目  
+                item.addElement("accsubjcode").setText("200601");//科目  
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -438,7 +438,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("2006");//
+                item.addElement("pk_accasoa").setText("200601");//
             }else {
                 //总盈亏大于0 放在贷方
                 Element item = details.addElement("item");
@@ -447,7 +447,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText("0");
                 item.addElement("localdebitamount").setText("0");
-                item.addElement("accsubjcode").setText("2006");//科目 
+                item.addElement("accsubjcode").setText("200601");//科目 
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -459,7 +459,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText(headProfit.getTotalProfit().setScale(2, RoundingMode.HALF_UP).abs().toString());
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("2006");//
+                item.addElement("pk_accasoa").setText("200601");//
             }
             
             //总部凭证结束
@@ -500,7 +500,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                     item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                     item.addElement("debitamount").setText("0");
                     item.addElement("localdebitamount").setText("0");
-                    item.addElement("accsubjcode").setText("2006");//科目  交易手续费
+                    item.addElement("accsubjcode").setText("200601");//科目  交易手续费
                     item.addElement("price").setText("0");//单价
                     item.addElement("excrate2").setText("1");
                     item.addElement("debitquantity").setText("0");//借方数量
@@ -512,7 +512,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                     item.addElement("globalcreditamount").setText("0");
                     item.addElement("localcreditamount").setText(profit.getTotalProfit().setScale(2, RoundingMode.HALF_UP).abs().toString());
                     item.addElement("pk_currtype").setText("CNY");
-                    item.addElement("pk_accasoa").setText("2006");//
+                    item.addElement("pk_accasoa").setText("200601");//
                 }
                 {
                     //借方 与总部往来
@@ -549,7 +549,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                     item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                     item.addElement("debitamount").setText(profit.getTotalProfit().setScale(2, RoundingMode.HALF_UP).abs().toString());
                     item.addElement("localdebitamount").setText(profit.getTotalProfit().setScale(2, RoundingMode.HALF_UP).abs().toString());
-                    item.addElement("accsubjcode").setText("2006");//科目  
+                    item.addElement("accsubjcode").setText("200601");//科目  
                     item.addElement("price").setText("0");//单价
                     item.addElement("excrate2").setText("1");
                     item.addElement("debitquantity").setText("0");//借方数量
@@ -561,7 +561,7 @@ public void generateVoucher(File infile, String targetPath, String date) throws 
                     item.addElement("globalcreditamount").setText("0");
                     item.addElement("localcreditamount").setText("0");
                     item.addElement("pk_currtype").setText("CNY");
-                    item.addElement("pk_accasoa").setText("2006");//
+                    item.addElement("pk_accasoa").setText("200601");//
                 }
                 
                 {

@@ -189,7 +189,7 @@ public class CFFEXDeclareService {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(headDep.abs().setScale(2, RoundingMode.HALF_UP).toString());
                 item.addElement("localdebitamount").setText(headDep.abs().setScale(2, RoundingMode.HALF_UP).toString());
-                item.addElement("accsubjcode").setText("2006");//科目  应付货币保证金 
+                item.addElement("accsubjcode").setText("200601");//科目  应付货币保证金 
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -201,7 +201,7 @@ public class CFFEXDeclareService {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("2006");//
+                item.addElement("pk_accasoa").setText("200601");//
             }
             //总数
             BigDecimal total = headDep;
@@ -302,7 +302,7 @@ public class CFFEXDeclareService {
                     item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                     item.addElement("debitamount").setText(depMoney.abs().setScale(2, RoundingMode.HALF_UP).toString());
                     item.addElement("localdebitamount").setText(depMoney.abs().setScale(2, RoundingMode.HALF_UP).toString());
-                    item.addElement("accsubjcode").setText("2006");//科目  应付货币保证金 
+                    item.addElement("accsubjcode").setText("200601");//科目  应付货币保证金 
                     item.addElement("price").setText("0");//单价
                     item.addElement("excrate2").setText("1");
                     item.addElement("debitquantity").setText("0");//借方数量
@@ -314,7 +314,7 @@ public class CFFEXDeclareService {
                     item.addElement("globalcreditamount").setText("0");
                     item.addElement("localcreditamount").setText("0");
                     item.addElement("pk_currtype").setText("CNY");
-                    item.addElement("pk_accasoa").setText("2006");//TODO
+                    item.addElement("pk_accasoa").setText("200601");//TODO
                 }
                 {
                     //贷方

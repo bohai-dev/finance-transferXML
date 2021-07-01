@@ -235,6 +235,55 @@ public class RoyaltyService {
                 item.addElement("pk_currtype").setText("CNY");
                 item.addElement("pk_accasoa").setText("11240203");//
             }
+
+            //2021-07-01 新增原油期权  
+            //能源中心
+            if(royaltyHead.getNyIn().compareTo(BigDecimal.ZERO) != 0){
+                //能源中心权利金总收入
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("权利金收支"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText(royaltyHead.getNyIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("localdebitamount").setText(royaltyHead.getNyIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("accsubjcode").setText("11240501");//科目  能源中心追加 
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText("0");//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText("0");
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240501");//
+            }
+            if(royaltyHead.getNyOut().compareTo(BigDecimal.ZERO) != 0){
+                //能源中心权利金总支出
+                Element item = details.addElement("item");
+                item.addElement("detailindex").setText(""+i++);
+                item.addElement("explanation").setText("权利金收支"+date);
+                item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
+                item.addElement("debitamount").setText("0");
+                item.addElement("localdebitamount").setText("0");
+                item.addElement("accsubjcode").setText("11240503");//科目  能源中心清退
+                item.addElement("price").setText("0");//单价
+                item.addElement("excrate2").setText("1");
+                item.addElement("debitquantity").setText("0");//借方数量
+                item.addElement("groupdebitamount").setText("0");
+                item.addElement("globaldebitamount").setText("0");
+                item.addElement("creditquantity").setText("0");//贷方数量
+                item.addElement("creditamount").setText(royaltyHead.getNyOut().abs().setScale(2, RoundingMode.HALF_UP).toString());//贷方金额
+                item.addElement("groupcreditamount").setText("0");
+                item.addElement("globalcreditamount").setText("0");
+                item.addElement("localcreditamount").setText(royaltyHead.getNyOut().abs().setScale(2, RoundingMode.HALF_UP).toString());
+                item.addElement("pk_currtype").setText("CNY");
+                item.addElement("pk_accasoa").setText("11240503");//
+            }
+            //2021-07-01 新增原油期权
+
             //2020-01-02 新增股票期权  
             //中金所
             if(royaltyHead.getZjIn().compareTo(BigDecimal.ZERO) != 0){
@@ -384,7 +433,7 @@ public class RoyaltyService {
                         item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                         item.addElement("debitamount").setText("0");
                         item.addElement("localdebitamount").setText("0");
-                        item.addElement("accsubjcode").setText("2006");//科目  大商所追加 
+                        item.addElement("accsubjcode").setText("200601");//科目  大商所追加 
                         item.addElement("price").setText("0");//单价
                         item.addElement("excrate2").setText("1");
                         item.addElement("debitquantity").setText("0");//借方数量
@@ -396,7 +445,7 @@ public class RoyaltyService {
                         item.addElement("globalcreditamount").setText("0");
                         item.addElement("localcreditamount").setText(dep.getIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
                         item.addElement("pk_currtype").setText("CNY");
-                        item.addElement("pk_accasoa").setText("2006");//
+                        item.addElement("pk_accasoa").setText("200601");//
                     }
                     if(dep.getOut().compareTo(BigDecimal.ZERO) != 0) {
                         Element item = details.addElement("item");
@@ -405,7 +454,7 @@ public class RoyaltyService {
                         item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                         item.addElement("debitamount").setText(dep.getOut().abs().setScale(2, RoundingMode.HALF_UP).toString());
                         item.addElement("localdebitamount").setText(dep.getOut().abs().setScale(2, RoundingMode.HALF_UP).toString());
-                        item.addElement("accsubjcode").setText("2006");//科目  大商所追加 
+                        item.addElement("accsubjcode").setText("200601");//科目  大商所追加 
                         item.addElement("price").setText("0");//单价
                         item.addElement("excrate2").setText("1");
                         item.addElement("debitquantity").setText("0");//借方数量
@@ -417,7 +466,7 @@ public class RoyaltyService {
                         item.addElement("globalcreditamount").setText("0");
                         item.addElement("localcreditamount").setText("0");
                         item.addElement("pk_currtype").setText("CNY");
-                        item.addElement("pk_accasoa").setText("2006");//
+                        item.addElement("pk_accasoa").setText("200601");//
                     }
                 }else {
                     if(dep.getIn().compareTo(BigDecimal.ZERO) != 0) {
@@ -517,7 +566,7 @@ public class RoyaltyService {
                         item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                         item.addElement("debitamount").setText("0");
                         item.addElement("localdebitamount").setText("0");
-                        item.addElement("accsubjcode").setText("2006");//科目  大商所追加 
+                        item.addElement("accsubjcode").setText("200601");//科目  大商所追加 
                         item.addElement("price").setText("0");//单价
                         item.addElement("excrate2").setText("1");
                         item.addElement("debitquantity").setText("0");//借方数量
@@ -529,7 +578,7 @@ public class RoyaltyService {
                         item.addElement("globalcreditamount").setText("0");
                         item.addElement("localcreditamount").setText(dep.getIn().abs().setScale(2, RoundingMode.HALF_UP).toString());
                         item.addElement("pk_currtype").setText("CNY");
-                        item.addElement("pk_accasoa").setText("2006");//
+                        item.addElement("pk_accasoa").setText("200601");//
                     }
                     {
                         //内部往来-总部
@@ -591,7 +640,7 @@ public class RoyaltyService {
                         item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                         item.addElement("debitamount").setText(dep.getOut().abs().setScale(2, RoundingMode.HALF_UP).toString());
                         item.addElement("localdebitamount").setText(dep.getOut().abs().setScale(2, RoundingMode.HALF_UP).toString());
-                        item.addElement("accsubjcode").setText("2006");//科目  大商所追加 
+                        item.addElement("accsubjcode").setText("200601");//科目  大商所追加 
                         item.addElement("price").setText("0");//单价
                         item.addElement("excrate2").setText("1");
                         item.addElement("debitquantity").setText("0");//借方数量
@@ -603,7 +652,7 @@ public class RoyaltyService {
                         item.addElement("globalcreditamount").setText("0");
                         item.addElement("localcreditamount").setText("0");
                         item.addElement("pk_currtype").setText("CNY");
-                        item.addElement("pk_accasoa").setText("2006");//
+                        item.addElement("pk_accasoa").setText("200601");//
                         
                     }
                 }

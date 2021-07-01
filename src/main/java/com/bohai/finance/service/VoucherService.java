@@ -325,7 +325,7 @@ public class VoucherService {
         }
         
         Headquarters head = new Headquarters();
-        head.setSubjectCode("2006");
+        head.setSubjectCode("200601");
         head.setDescription("银期转账（入）");
         head.setIn(ZERO);
         head.setOut(ZERO);
@@ -714,7 +714,7 @@ public class VoucherService {
                 item1.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item1.addElement("debitamount").setText("0");
                 item1.addElement("localdebitamount").setText("0");
-                item1.addElement("accsubjcode").setText("2006");//科目  应付货币保证金 
+                item1.addElement("accsubjcode").setText("200601");//科目  应付货币保证金 
                 item1.addElement("price").setText("0");//单价
                 item1.addElement("excrate2").setText("1");
                 item1.addElement("debitquantity").setText("0");//借方数量
@@ -726,7 +726,7 @@ public class VoucherService {
                 item1.addElement("globalcreditamount").setText("0");
                 item1.addElement("localcreditamount").setText(book.getIn().setScale(2, RoundingMode.HALF_UP).toString());
                 item1.addElement("pk_currtype").setText("CNY");
-                item1.addElement("pk_accasoa").setText("2006");//
+                item1.addElement("pk_accasoa").setText("200601");//
             }
             
             //出金
@@ -738,7 +738,7 @@ public class VoucherService {
                 item.addElement("verifydate").setText(DateFormatterUtil.getDateStrByFormatter(new Date(), "yyyy-MM-dd"));
                 item.addElement("debitamount").setText(book.getOut().setScale(2, RoundingMode.HALF_UP).toString());
                 item.addElement("localdebitamount").setText(book.getOut().setScale(2, RoundingMode.HALF_UP).toString());
-                item.addElement("accsubjcode").setText("2006");//科目  保证金 
+                item.addElement("accsubjcode").setText("200601");//科目  保证金 
                 item.addElement("price").setText("0");//单价
                 item.addElement("excrate2").setText("1");
                 item.addElement("debitquantity").setText("0");//借方数量
@@ -750,7 +750,7 @@ public class VoucherService {
                 item.addElement("globalcreditamount").setText("0");
                 item.addElement("localcreditamount").setText("0");
                 item.addElement("pk_currtype").setText("CNY");
-                item.addElement("pk_accasoa").setText("2006");//
+                item.addElement("pk_accasoa").setText("200601");//
                 
                 
                 //贷方
